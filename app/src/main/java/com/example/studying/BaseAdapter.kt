@@ -12,7 +12,7 @@ abstract class BaseAdapter<T : Comparing<T>, E : BaseViewHolder<T>> :
 }
 
 abstract class BaseViewHolder<T>(view: View) : RecyclerView.ViewHolder(view) {
-    abstract fun bind(joke: T, position: Int)
+    abstract fun bind(item: T, position: Int)
 
     class Loading()
 }

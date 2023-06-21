@@ -1,6 +1,11 @@
 package com.example.studying
 
-sealed class PostUi: Comparing<PostUi> {
+interface TextMapper : Mapper<Mapper<String>> {
+    override fun map(data: Mapper<String>) = Unit
+}
+
+sealed class PostUi: Comparing<PostUi>, TextMapper {
+
 
     override fun same(item: PostUi): Boolean = false
     override fun sameContent(item: PostUi): Boolean = false
@@ -14,6 +19,8 @@ sealed class PostUi: Comparing<PostUi> {
 
         override fun sameContent(item: PostUi): Boolean =
             this == item
+
+        override fun map(data: Mapper<String>) = data.map(text)
 
     }
 

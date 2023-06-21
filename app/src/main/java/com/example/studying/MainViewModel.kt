@@ -24,7 +24,7 @@ class MainViewModel : ViewModel() {
     private fun fetchData(): Flow<List<PostUi>> = flow {
         emit(listOf(PostUi.Loading))
         val list = mutableListOf<PostUi>()
-        for (i in 0..10) {
+        for (i in 0..100) {
             list.add(
                 PostUi.Base(
                     i,
