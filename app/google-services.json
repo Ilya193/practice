@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "554357004899",
+    "firebase_url": "https://studying-d00bd-default-rtdb.firebaseio.com",
+    "project_id": "studying-d00bd",
+    "storage_bucket": "studying-d00bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554357004899:android:63b435be84da5d13be3656",
+        "android_client_info": {
+          "package_name": "com.example.studying"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554357004899-mfo9ocu8viakmpdeb48uvre6gi6fk68i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtb07sJhT86sjiZi2vU9jpC9gvMKRnSzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554357004899-mfo9ocu8viakmpdeb48uvre6gi6fk68i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
