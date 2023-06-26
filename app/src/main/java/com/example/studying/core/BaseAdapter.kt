@@ -1,12 +1,15 @@
-package com.example.studying
+package com.example.studying.core
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.studying.presentation.CustomTextView
+import com.example.studying.presentation.Listeners
+import com.example.studying.presentation.MessageUi
+import com.example.studying.R
 import com.example.studying.databinding.TextItemBinding
 
 abstract class BaseAdapter<T : Comparing<T>, E : BaseViewHolder<T>> :
@@ -25,7 +28,6 @@ class MessagesAdapter(
 ) : BaseAdapter<MessageUi, MessagesAdapter.TextViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextViewHolder {
-        Log.d("attadag", "$itemCount")
         return TextViewHolder(
             TextItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -45,8 +47,8 @@ class MessagesAdapter(
         else {
             val bundle = payloads[0] as Bundle
             if (bundle.size() != 0) {
-                val favorite = bundle.getBoolean("newItem")
-                if (favorite) holder.bind(getItem(position), position)
+                val isChange = bundle.getBoolean("newItem")
+                if (isChange) holder.bind(getItem(position), position)
             }
         }
     }
@@ -61,5 +63,4 @@ class MessagesAdapter(
             }
         }
     }
-
 }

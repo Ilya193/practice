@@ -1,6 +1,14 @@
-package com.example.studying
+package com.example.studying.di
 
 import androidx.room.Room
+import com.example.studying.data.CacheDataSource
+import com.example.studying.core.Communication
+import com.example.studying.presentation.MessageUi
+import com.example.studying.data.MessagesDAO
+import com.example.studying.data.MessagesDB
+import com.example.studying.domain.MessagesInteractor
+import com.example.studying.data.MessagesRepository
+import com.example.studying.presentation.MessagesViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 

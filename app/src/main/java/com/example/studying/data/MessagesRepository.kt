@@ -1,5 +1,6 @@
-package com.example.studying
+package com.example.studying.data
 
+import com.example.studying.domain.MessageSave
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

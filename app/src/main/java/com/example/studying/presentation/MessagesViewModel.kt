@@ -1,9 +1,12 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.studying.domain.MessageSave
+import com.example.studying.domain.MessagesInteractor
+import com.example.studying.core.Communication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

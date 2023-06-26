@@ -1,9 +1,9 @@
-package com.example.studying
+package com.example.studying.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
+import com.example.studying.core.ToMapper
 
 
 @Entity(tableName = "Messages")

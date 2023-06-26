@@ -1,4 +1,7 @@
-package com.example.studying
+package com.example.studying.domain
+
+import com.example.studying.core.ToMapper
+import com.example.studying.presentation.MessageUi
 
 data class MessageDomain(
     private val id: Int,

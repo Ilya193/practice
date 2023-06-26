@@ -1,9 +1,9 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-
+import com.example.studying.core.Mapper
 
 
 class CustomTextView : AppCompatTextView, Mapper<String> {
