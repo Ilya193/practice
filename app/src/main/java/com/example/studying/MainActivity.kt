@@ -21,16 +21,18 @@ class MainActivity : AppCompatActivity(), Listeners {
         setDisplayHomeAsUpEnabled(true)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, LoginFragment.newInstance("nameTest"))
+            .add(R.id.fragmentContainerView, RegistrationFragment.newInstance())
             .addToBackStack(null)
             .commit()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) is LoginFragment) {
+                if (isRegistrationFragment()) {
                     setDisplayHomeAsUpEnabled(false)
                     supportFragmentManager.popBackStack()
                 }
+                else if (isLoginFragment())
+                    supportFragmentManager.popBackStack()
                 else
                     finish()
             }
@@ -41,11 +43,23 @@ class MainActivity : AppCompatActivity(), Listeners {
         supportActionBar?.setDisplayHomeAsUpEnabled(data)
     }
 
+    private fun isRegistrationFragment(): Boolean =
+        supportFragmentManager.findFragmentById(R.id.fragmentContainerView) is RegistrationFragment
+
+    private fun isLoginFragment(): Boolean =
+        supportFragmentManager.findFragmentById(R.id.fragmentContainerView) is LoginFragment
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                setDisplayHomeAsUpEnabled(false)
-                supportFragmentManager.popBackStack()
+                if (isRegistrationFragment()) {
+                    setDisplayHomeAsUpEnabled(false)
+                    supportFragmentManager.popBackStack()
+                }
+                else {
+                    supportFragmentManager.popBackStack()
+                }
                 return true
             }
         }
