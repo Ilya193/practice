@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -46,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         )?.use { cursor ->
             while (cursor.moveToNext()) {
                 val data = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
-                //Log.d("attadag", "attadag ${cursor.getString(titleColIndex)}}")
-                musics.add(Uri.parse(cursor.getString(data)))
+                Log.d("attadag", "attadag ${cursor.getString(data)}")
+                //musics.add(Uri.parse(cursor.getString(data)))
             }
         }
     }
