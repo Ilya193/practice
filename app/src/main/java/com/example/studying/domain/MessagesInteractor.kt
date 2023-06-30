@@ -1,5 +1,6 @@
 package com.example.studying.domain
 
+import com.example.studying.data.MessageData
 import com.example.studying.data.MessagesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,17 +10,16 @@ interface MessagesInteractor {
     suspend fun insertMessage(message: MessageSave)
     suspend fun deleteMessage(message: MessageSave)
 
+    suspend fun search(text: String): Flow<List<MessageDomain>>
+
     class Base(
         private val messagesRepository: MessagesRepository,
+        private val listToList: DataListToDomainListMapper<List<MessageData>, List<MessageDomain>>,
     ) : MessagesInteractor {
         override suspend fun getAllMessages(): Flow<List<MessageDomain>> = flow {
-            val newList = mutableListOf<MessageDomain>()
             messagesRepository.getAllMessages().collect {
-                it.map { messageData ->
-                    newList.add(messageData.map())
-                }
+                emit(listToList.map(it))
             }
-            emit(newList)
         }
 
         override suspend fun insertMessage(message: MessageSave) {
@@ -28,6 +28,12 @@ interface MessagesInteractor {
 
         override suspend fun deleteMessage(message: MessageSave) {
             messagesRepository.deleteMessage(message)
+        }
+
+        override suspend fun search(text: String): Flow<List<MessageDomain>> = flow {
+            messagesRepository.search(text).collect {
+                emit(listToList.map(it))
+            }
         }
 
     }

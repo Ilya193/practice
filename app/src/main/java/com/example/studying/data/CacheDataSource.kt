@@ -7,6 +7,8 @@ interface CacheDataSource {
     suspend fun getAllMessages(): Flow<List<MessageCache>>
     suspend fun insertMessage(message: MessageCache)
     suspend fun deleteMessage(message: MessageCache)
+    suspend fun search(text: String): Flow<List<MessageCache>>
+
 
     class Base(
         private val messagesDao: MessagesDAO,
@@ -21,6 +23,10 @@ interface CacheDataSource {
 
         override suspend fun deleteMessage(message: MessageCache) {
             messagesDao.deleteMessage(message)
+        }
+
+        override suspend fun search(text: String): Flow<List<MessageCache>> = flow {
+            emit(messagesDao.search(text))
         }
 
     }

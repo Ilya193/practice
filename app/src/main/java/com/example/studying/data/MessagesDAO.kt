@@ -15,4 +15,7 @@ interface MessagesDAO {
 
     @Delete
     suspend fun deleteMessage(message: MessageCache)
+
+    @Query("SELECT * FROM Messages WHERE text LIKE :data || '%'")
+    suspend fun search(data: String): List<MessageCache>
 }

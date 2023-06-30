@@ -13,6 +13,6 @@ data class MessageCache(
     val id: Int = 0,
     @ColumnInfo("text")
     val text: String
-): ToMapper<MessageData> {
+) : ToMapper<MessageData> {
     override fun map(): MessageData = MessageData(id, text)
 }

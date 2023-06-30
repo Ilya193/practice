@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.studying.domain.MessageSave
 import com.example.studying.domain.MessagesInteractor
 import com.example.studying.core.Communication
+import com.example.studying.domain.MessageDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,6 +16,7 @@ import kotlinx.coroutines.withContext
 class MessagesViewModel(
     private val messagesInteractor: MessagesInteractor,
     private val communication: Communication<List<MessageUi>>,
+    private val listToList: DomainListToUiListMapper<List<MessageDomain>, List<MessageUi>>
 ) : ViewModel() {
 
     init {
@@ -23,15 +25,11 @@ class MessagesViewModel(
 
     private fun getAllMessages() {
         viewModelScope.launch(Dispatchers.IO) {
-            val newList = mutableListOf<MessageUi>()
             messagesInteractor.getAllMessages().collect {
-                it.map { messageDomain ->
-                    newList.add(messageDomain.map())
+                val uiList = listToList.map(it)
+                withContext(Dispatchers.Main) {
+                    communication.map(uiList)
                 }
-            }
-
-            withContext(Dispatchers.Main) {
-                communication.map(newList)
             }
         }
     }
@@ -51,6 +49,18 @@ class MessagesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             messagesInteractor.deleteMessage(message.map())
             getAllMessages()
+        }
+    }
+
+
+    fun search(text: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            messagesInteractor.search(text).collect {
+                val uiList = listToList.map(it)
+                withContext(Dispatchers.Main) {
+                    communication.map(uiList)
+                }
+            }
         }
     }
 }
