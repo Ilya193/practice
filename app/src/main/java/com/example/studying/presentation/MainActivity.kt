@@ -23,15 +23,24 @@ class MainActivity : AppCompatActivity(), Listeners {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        settingRecyclerView()
+        settingViewModel()
+        settingListeners()
+    }
 
+    private fun settingRecyclerView() {
         binding.messagesRV.adapter = adapter
         binding.messagesRV.setHasFixedSize(true)
         binding.messagesRV.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
+    }
 
+    private fun settingViewModel() {
         viewModel.observe(this) {
             adapter.submitList(it)
         }
+    }
 
+    private fun settingListeners() {
         binding.saveButton.setOnClickListener {
             viewModel.saveMessage(binding.messageSave.text.toString())
             binding.messageSave.setText("")
