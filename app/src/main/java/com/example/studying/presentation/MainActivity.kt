@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.example.studying.core.BaseTextWatcher
 import com.example.studying.core.MessagesAdapter
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,9 +37,7 @@ class MainActivity : AppCompatActivity(), Listeners {
             binding.messageSave.setText("")
         }
 
-        binding.search.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
+        binding.search.addTextChangedListener(object : BaseTextWatcher() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().isNotEmpty()) {
                     viewModel.search(p0.toString())
@@ -49,8 +48,6 @@ class MainActivity : AppCompatActivity(), Listeners {
                     enabledUi(true)
                 }
             }
-
-            override fun afterTextChanged(p0: Editable?) {}
         })
     }
 
