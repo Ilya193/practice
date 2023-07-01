@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity(), Listeners {
         binding.messagesRV.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
 
         viewModel.observe(this) {
-            Log.d("attadag", "$it")
             adapter.submitList(it)
         }
 
