@@ -40,11 +40,23 @@ class MainActivity : AppCompatActivity(), Listeners {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.search(p0.toString())
+                if (p0.toString().isNotEmpty()) {
+                    viewModel.search(p0.toString())
+                    enabledUi(false)
+                }
+                else {
+                    viewModel.search(p0.toString())
+                    enabledUi(true)
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {}
         })
+    }
+
+    private fun enabledUi(data: Boolean) {
+        binding.saveButton.isEnabled = data
+        binding.messageSave.isEnabled = data
     }
 
     override fun onClick(message: MessageUi) {
