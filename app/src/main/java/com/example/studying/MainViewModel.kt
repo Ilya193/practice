@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class MainViewModel : ViewModel() {
     private val _list = MutableStateFlow<List<PostUi>>(listOf())
@@ -15,23 +18,46 @@ class MainViewModel : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchData().collect {
-                _list.value = it
-            }
+            fetchData()
         }
     }
 
-    private fun fetchData(): Flow<List<PostUi>> = flow {
-        emit(listOf(PostUi.Loading))
-        val list = mutableListOf<PostUi>()
-        for (i in 0..100) {
-            list.add(
-                PostUi.Base(
-                    i,
-                    "Persecuti error taciti elit prodesset graeco dolores. Imperdiet mutat dolor brute ridiculus."
-                )
-            )
+    private suspend fun fetchData(): List<PostUi> {
+        return suspendCoroutine { continuation ->
+            val cds = TestCloudDataSource.Base(object : Result<List<PostUi>> {
+                override fun success(data: List<PostUi>) {
+                    continuation.resume(data)
+                }
+
+                override fun error(e: Exception) {
+                    continuation.resumeWithException(e)
+                }
+            })
+            cds.fetchData()
         }
-        emit(list)
     }
+}
+
+interface TestCloudDataSource {
+    fun fetchData()
+
+    class Base(private val result: Result<List<PostUi>>) : TestCloudDataSource {
+        override fun fetchData() {
+            val list = mutableListOf<PostUi>()
+            for (i in 0..100) {
+                list.add(
+                    PostUi.Base(
+                        i,
+                        "Persecuti error taciti elit prodesset graeco dolores. Imperdiet mutat dolor brute ridiculus."
+                    )
+                )
+            }
+            result.success(list)
+        }
+    }
+}
+
+interface Result<T> {
+    fun success(data: T)
+    fun error(e: Exception)
 }
