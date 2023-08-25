@@ -3,6 +3,7 @@ package com.example.studying
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -17,10 +18,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        mainViewModel.fetchPosts()
+        mainViewModel.fetchMessages()
+/*        findViewById<TextView>(R.id.tvHello).setOnClickListener {
+            mainViewModel.fetchMessages()
+        }*/
 
-        findViewById<TextView>(R.id.tvHello).setOnClickListener {
-            mainViewModel.fetchPosts()
+        findViewById<ConstraintLayout>(R.id.root).setOnClickListener {
+            mainViewModel.createMessage("message")
         }
     }
 }
