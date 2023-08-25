@@ -1,5 +1,6 @@
 package com.example.studying
 
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -23,6 +24,10 @@ val appModule = module {
             .addConverterFactory(get())
             .build()
             .create(PostsService::class.java)
+    }
+
+    viewModel<MainViewModel> {
+        MainViewModel(get())
     }
 
 }

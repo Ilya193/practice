@@ -1,6 +1,7 @@
 package com.example.studying
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -15,5 +16,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        mainViewModel.fetchPosts()
+
+        findViewById<TextView>(R.id.tvHello).setOnClickListener {
+            mainViewModel.fetchPosts()
+        }
     }
 }
