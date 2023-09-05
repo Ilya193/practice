@@ -1,4 +1,4 @@
-package com.example.studying
+package com.example.studying.data
 
 import retrofit2.http.GET
 

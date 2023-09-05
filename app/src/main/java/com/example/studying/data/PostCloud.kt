@@ -1,4 +1,4 @@
-package com.example.studying
+package com.example.studying.data
 
 import com.google.gson.annotations.SerializedName
 
@@ -12,5 +12,5 @@ data class PostCloud(
     @SerializedName("body")
     private val body: String
 ) {
-
+    fun map(): PostData = PostData(userId, id, title, body)
 }

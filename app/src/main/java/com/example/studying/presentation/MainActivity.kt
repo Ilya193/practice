@@ -1,8 +1,10 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.studying.R
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,6 +23,16 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.tvHello).setOnClickListener {
             mainViewModel.fetchPosts()
+        }
+
+        mainViewModel.success.observe(this) {
+            Log.w("attadag", it.toString())
+        }
+
+        mainViewModel.error.observe(this) {
+            it.getContentOrNot {
+                Log.w("attadag", it.toString())
+            }
         }
     }
 }
