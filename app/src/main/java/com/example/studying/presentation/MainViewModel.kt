@@ -33,7 +33,6 @@ class MainViewModel(
                     _success.postValue(posts)
                 }
                 is Result.Error -> {
-                    event.setState(false)
                     event.setValue(PostUi.Error(result.e.message ?: "Error"))
                     _error.postValue(event)
                 }

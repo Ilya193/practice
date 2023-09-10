@@ -22,6 +22,7 @@ interface EventWrapper<T> {
 
     class Change<T>(data: T) : State<T>(data) {
         fun setValue(value: T) {
+            setState(false)
             data = value
         }
     }

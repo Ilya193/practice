@@ -1,12 +1,17 @@
 package com.example.studying.presentation
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.studying.R
 import com.example.studying.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -14,19 +19,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val mainViewModel: MainViewModel by viewModel()
+    private val adapter = PostsAdapter { title ->
+        Snackbar.make(binding.root, title, Snackbar.LENGTH_SHORT).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        binding.rvPosts.adapter = adapter
+        binding.rvPosts.setHasFixedSize(true)
+
         mainViewModel.fetchPosts()
 
-        findViewById<TextView>(R.id.tvHello).setOnClickListener {
-            mainViewModel.fetchPosts()
-        }
-
         mainViewModel.success.observe(this) {
-            Log.w("attadag", it.toString())
+            adapter.submitList(it)
         }
 
         mainViewModel.error.observe(this) {
