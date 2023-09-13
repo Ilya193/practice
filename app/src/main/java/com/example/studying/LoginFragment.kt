@@ -2,10 +2,12 @@ package com.example.studying
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import com.example.studying.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -40,6 +42,11 @@ class LoginFragment : Fragment() {
     private fun settingListeners() {
         binding.textView.setOnClickListener {
             listeners.onCLick(name)
+        }
+
+        binding.root.setOnClickListener {
+            setFragmentResult("CAR", bundleOf("CAR" to "Nissan"))
+            parentFragmentManager.popBackStack()
         }
     }
 

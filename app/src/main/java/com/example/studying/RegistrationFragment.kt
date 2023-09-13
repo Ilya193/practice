@@ -1,17 +1,28 @@
 package com.example.studying
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.example.studying.databinding.FragmentRegistationBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 class RegistrationFragment : Fragment() {
     private var _binding: FragmentRegistationBinding? = null
     private val binding: FragmentRegistationBinding
         get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener("CAR") { requestKey, bundle ->
+            val result = bundle.getString("CAR") ?: ""
+            binding.textView.text = result
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +40,7 @@ class RegistrationFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
     }
 
     companion object {
