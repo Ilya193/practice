@@ -1,13 +1,9 @@
 package com.example.studying.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.studying.R
 import com.example.studying.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
