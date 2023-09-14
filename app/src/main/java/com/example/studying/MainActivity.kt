@@ -13,41 +13,47 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        Log.d("attadag", "onCreate")
+        Log.d("dalvik", "onCreate")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("attadag", "onStart")
+        Log.d("dalvik", "onStart")
+        Thread.sleep(2500)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d("dalvik", "onRestart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("attadag", "onResume")
+        Log.d("dalvik", "onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("attadag", "onPause")
+        Log.d("dalvik", "onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("attadag", "onStop")
+        Log.d("dalvik", "onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("attadag", "onDestroy")
+        Log.d("dalvik", "onDestroy")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("attadag", "onSaveInstanceState")
+        Log.d("dalvik", "onSaveInstanceState")
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        Log.d("attadag", "onRestoreInstanceState")
+        Log.d("dalvik", "onRestoreInstanceState")
     }
 }
