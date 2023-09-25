@@ -34,23 +34,18 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.uiState.observe(this) { state ->
             when (state) {
-                is PostUiState.Success -> {
-                    showPosts(state.data)
-                }
-                is PostUiState.Error -> {
-                    showError(state.message)
-                }
-                is PostUiState.Loading -> {
-                    showLoading()
-                }
+                is PostUiState.Success -> showPosts(state.data)
+                is PostUiState.Error -> showError(state.message)
+                is PostUiState.Loading -> showLoading()
             }
         }
     }
 
-    private fun showPosts(data: List<PostUi>) {
+    private fun showPosts(data: List<PostUi.Success>) {
         binding.progressBar.visibility = View.GONE
         binding.containerError.visibility = View.GONE
         binding.rvPosts.visibility = View.VISIBLE
+
         adapter.submitList(data)
     }
 
@@ -58,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.GONE
         binding.rvPosts.visibility = View.GONE
         binding.containerError.visibility = View.VISIBLE
+
         binding.tvError.text = message
         binding.btnRetry.setOnClickListener {
             mainViewModel.fetchPosts()

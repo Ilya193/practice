@@ -10,13 +10,13 @@ import com.example.studying.databinding.PostLayoutBinding
 
 class PostsAdapter(
     private val onClick: (String) -> Unit
-) : ListAdapter<PostUi, PostsAdapter.BaseViewHolder>(DiffUtilCallback<PostUi>()) {
+) : ListAdapter<PostUi.Success, PostsAdapter.BaseViewHolder>(DiffUtilCallback<PostUi.Success>()) {
     private var countCreateViewHolder = 0
     private var countBindViewHolder = 0
 
     inner class BaseViewHolder(private val view: PostLayoutBinding) : RecyclerView.ViewHolder(view.root) {
-        fun bind(item: PostUi) {
-            view.tvTitle.text = if (item is PostUi.Success) item.title else "ERROR"
+        fun bind(item: PostUi.Success) {
+            view.tvTitle.text = item.title
             view.root.startAnimation(AnimationUtils.loadAnimation(view.root.context, R.anim.main_anim))
         }
     }
