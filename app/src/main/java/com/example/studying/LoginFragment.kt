@@ -2,6 +2,7 @@ package com.example.studying
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,17 +36,24 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFragmentResult("actionBack", bundleOf("state" to true))
         parseParams()
         settingListeners()
+        Log.d("attadag", "onViewCreated login")
     }
 
     private fun settingListeners() {
         binding.textView.setOnClickListener {
-            listeners.onCLick(name)
+            //listeners.onCLick(name)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, ChatFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
         }
 
         binding.root.setOnClickListener {
-            setFragmentResult("CAR", bundleOf("CAR" to "Nissan"))
+            setFragmentResult("car", bundleOf("nameCar" to "Nissan"))
+            setFragmentResult("actionBack", bundleOf("state" to false))
             parentFragmentManager.popBackStack()
         }
     }
@@ -59,8 +67,9 @@ class LoginFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        _binding = null
         super.onDestroyView()
+        _binding = null
+        Log.d("attadag", "onDestroyView login")
     }
 
     companion object {
