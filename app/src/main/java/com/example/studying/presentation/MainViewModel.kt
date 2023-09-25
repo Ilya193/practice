@@ -21,8 +21,7 @@ class MainViewModel(
 
     fun fetchPosts() {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(3000)
-            //_uiState.postValue(PostUiState.Loading)
+            _uiState.postValue(PostUiState.Loading)
             when (val result = postsUseCase()) {
                 is Result.Success -> {
                     val posts = result.data.map {
