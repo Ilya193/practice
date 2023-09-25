@@ -8,6 +8,7 @@ import com.example.studying.domain.FetchPostsUseCase
 import com.example.studying.domain.Result
 import com.example.studying.domain.ToUiMapper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -20,7 +21,8 @@ class MainViewModel(
 
     fun fetchPosts() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.postValue(PostUiState.Loading)
+            delay(3000)
+            //_uiState.postValue(PostUiState.Loading)
             when (val result = postsUseCase()) {
                 is Result.Success -> {
                     val posts = result.data.map {
