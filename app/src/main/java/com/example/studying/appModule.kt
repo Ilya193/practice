@@ -2,6 +2,7 @@ package com.example.studying
 
 import com.example.studying.data.MainRepositoryImpl
 import com.example.studying.data.PostsService
+import com.example.studying.domain.FetchPostsUseCase
 import com.example.studying.domain.MainInteractor
 import com.example.studying.domain.MainInteractorImpl
 import com.example.studying.domain.MainRepository
@@ -39,6 +40,10 @@ val appModule = module {
 
     factory<MainInteractor> {
         MainInteractorImpl(get())
+    }
+
+    factory<FetchPostsUseCase> {
+        FetchPostsUseCase(get())
     }
 
     factory<ToUiMapper<PostUi.Success>> { BaseToUiMapper() }

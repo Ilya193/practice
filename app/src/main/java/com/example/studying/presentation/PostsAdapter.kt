@@ -1,6 +1,5 @@
 package com.example.studying.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -23,7 +22,6 @@ class PostsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        Log.w("attadag", "onCreateViewHolder: ${countCreateViewHolder++}")
         val view = PostLayoutBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         ).apply {
@@ -35,7 +33,6 @@ class PostsAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        Log.w("attadag", "onBindViewHolder: ${countBindViewHolder++}")
         holder.bind(getItem(position))
     }
 }

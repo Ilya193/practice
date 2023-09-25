@@ -2,6 +2,7 @@ package com.example.studying.presentation
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.studying.databinding.ActivityMainBinding
@@ -31,14 +32,40 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.fetchPosts()
 
-        mainViewModel.success.observe(this) {
-            adapter.submitList(it)
-        }
-
-        mainViewModel.error.observe(this) {
-            it.getContentOrNot {
-                Log.w("attadag", it.toString())
+        mainViewModel.uiState.observe(this) { state ->
+            when (state) {
+                is PostUiState.Success -> {
+                    showPosts(state.data)
+                }
+                is PostUiState.Error -> {
+                    showError(state.message)
+                }
+                is PostUiState.Loading -> {
+                    showLoading()
+                }
             }
         }
+    }
+
+    private fun showPosts(data: List<PostUi>) {
+        binding.progressBar.visibility = View.GONE
+        binding.containerError.visibility = View.GONE
+        binding.rvPosts.visibility = View.VISIBLE
+        adapter.submitList(data)
+    }
+
+    private fun showError(message: String) {
+        binding.progressBar.visibility = View.GONE
+        binding.rvPosts.visibility = View.GONE
+        binding.containerError.visibility = View.VISIBLE
+        binding.tvError.text = message
+        binding.btnRetry.setOnClickListener {
+            mainViewModel.fetchPosts()
+            binding.progressBar.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
     }
 }
