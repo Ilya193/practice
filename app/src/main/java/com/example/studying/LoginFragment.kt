@@ -60,7 +60,8 @@ class LoginFragment : Fragment() {
 
     private fun parseParams() {
         val bundle = arguments
-        if (bundle != null) {
+
+        bundle?.let {
             name = bundle.getString(NAME_USER) ?: ""
             binding.textView.text = name
         }

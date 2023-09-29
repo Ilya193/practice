@@ -20,7 +20,7 @@ class RegistrationFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener("car") { requestKey, bundle ->
+        setFragmentResultListener("car") { _, bundle ->
             val result = bundle.getString("nameCar") ?: ""
             binding.textView.text = result
         }

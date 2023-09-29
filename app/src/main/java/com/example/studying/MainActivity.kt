@@ -36,18 +36,11 @@ class MainActivity : AppCompatActivity(), Listeners {
     private fun isRegistrationFragment(): Boolean =
         supportFragmentManager.findFragmentById(R.id.fragmentContainerView) is RegistrationFragment
 
-    private fun isLoginFragment(): Boolean =
-        supportFragmentManager.findFragmentById(R.id.fragmentContainerView) is LoginFragment
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                if (isRegistrationFragment()) {
-                    supportFragmentManager.popBackStack()
-                } else {
-                    supportFragmentManager.popBackStack()
-                }
+                supportFragmentManager.popBackStack()
                 return true
             }
         }

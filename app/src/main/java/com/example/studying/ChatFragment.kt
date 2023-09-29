@@ -18,9 +18,13 @@ class ChatFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        setFragmentResult("actionBack", bundleOf("state" to true))
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setFragmentResult("actionBack", bundleOf("state" to true))
     }
 
     override fun onDestroyView() {
