@@ -7,15 +7,22 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ServerTimestamp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
+import java.util.Date
 import java.util.UUID
 
 class MainViewModel(
-    private val db: FirebaseDatabase
+    private val db: FirebaseDatabase,
+    private val firestore: FirebaseFirestore
 ) : ViewModel() {
 
     fun fetchMessages() {
@@ -50,12 +57,32 @@ class MainViewModel(
     fun createMessage(message: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = db.reference.push().key ?: UUID.randomUUID().toString()
-            db.reference.child("messages").child(id).setValue(MessageCloud(id, message))
+            db.reference.child("messages").child(id).setValue(MessageCloud(id, message)).await()
+        }
+    }
+
+    private var testid = 0
+
+    fun createMessageWithFirestore(message: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = UUID.randomUUID().toString()
+            firestore.collection("messages")
+                .document(id)
+                .set(MessageCloud(id, message + "${testid++}"))
+            /*val data = firestore.collection("messages")
+                .orderBy("createdDate", Query.Direction.ASCENDING)
+                .get().await()
+            for (e in data) {
+                val data = e.toObject(MessageCloud::class.java)
+                Log.d("attadag", "$data")
+            }*/
         }
     }
 }
 
 data class MessageCloud(
     val id: String = "",
-    val message: String = ""
+    val message: String = "",
+    @ServerTimestamp
+    val createdDate: Date = Date()
 )

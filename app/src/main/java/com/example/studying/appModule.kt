@@ -1,6 +1,7 @@
 package com.example.studying
 
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
@@ -12,8 +13,12 @@ val appModule = module {
         FirebaseDatabase.getInstance()
     }
 
+    single<FirebaseFirestore> {
+        FirebaseFirestore.getInstance()
+    }
+
     viewModel<MainViewModel> {
-        MainViewModel(get())
+        MainViewModel(get(), get())
     }
 
 }

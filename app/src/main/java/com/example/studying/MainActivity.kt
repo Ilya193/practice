@@ -18,13 +18,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        mainViewModel.fetchMessages()
+        //mainViewModel.fetchMessages()
 /*        findViewById<TextView>(R.id.tvHello).setOnClickListener {
             mainViewModel.fetchMessages()
         }*/
 
         findViewById<ConstraintLayout>(R.id.root).setOnClickListener {
-            mainViewModel.createMessage("message")
+            mainViewModel.createMessageWithFirestore("message")
         }
     }
 }
