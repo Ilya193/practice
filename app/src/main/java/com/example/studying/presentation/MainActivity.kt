@@ -22,10 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val mainViewModel: MainViewModel by viewModel()
-    /*private val adapter = PostsAdapter{ index ->
-        mainViewModel.setFavorite(index)
-        //Snackbar.make(binding.root, title, Snackbar.LENGTH_SHORT).show()
-    }*/
+    //private val adapter = PostsAdapter({mainViewModel.delete(it)}, {mainViewModel.setFavorite(it)})
 
     private val adapter: SimpleBindingAdapter<PostUi.Success> by lazy {
         simpleAdapter<PostUi.Success, PostLayoutBinding> {
@@ -40,6 +37,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             bindWithPayloads { item, payloads ->
+                fun bindFavorite() {
+                    if (item.isFavorite)
+                        icFavorite.setBackgroundResource(R.drawable.baseline_favorite_24)
+                    else
+                        icFavorite.setBackgroundResource(R.drawable.baseline_favorite_border_24)
+                }
+
                 if (payloads.isEmpty()) {
                     tvTitle.text = item.title
                     root.startAnimation(
@@ -48,12 +52,10 @@ class MainActivity : AppCompatActivity() {
                             R.anim.main_anim
                         )
                     )
+                    bindFavorite()
                 }
                 else if (payloads[0] == true) {
-                    if (item.isFavorite)
-                        icFavorite.setBackgroundResource(R.drawable.baseline_favorite_24)
-                    else
-                        icFavorite.setBackgroundResource(R.drawable.baseline_favorite_border_24)
+                    bindFavorite()
                 }
             }
 
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.delete(it)
                 }
                 icFavorite.onClick {
-                    mainViewModel.setFavorite(index())
+                    mainViewModel.setFavorite(it)
                 }
             }
         }

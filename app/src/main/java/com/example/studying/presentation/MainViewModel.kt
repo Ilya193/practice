@@ -1,5 +1,6 @@
 package com.example.studying.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,11 +43,16 @@ class MainViewModel(
         mainPosts.remove(item)
         val posts = mainPosts.map { it.copy() }
         _uiState.postValue(PostUiState.Success(posts))
+        Log.d("attadag", "delete $posts")
     }
 
-    fun setFavorite(index: Int) {
-        mainPosts[index] = mainPosts[index].copy(isFavorite = !mainPosts[index].isFavorite)
+    fun setFavorite(item: PostUi.Success) {
+        mainPosts = mainPosts.map {
+            if (item.id == it.id) it.copy(isFavorite = !it.isFavorite)
+            else it
+        }.toMutableList()
         val posts = mainPosts.map { it.copy() }
         _uiState.postValue(PostUiState.Success(posts))
+        Log.d("attadag", "setFavorite $posts")
     }
 }

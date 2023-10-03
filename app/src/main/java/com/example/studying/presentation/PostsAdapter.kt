@@ -9,7 +9,8 @@ import com.example.studying.R
 import com.example.studying.databinding.PostLayoutBinding
 
 class PostsAdapter(
-    private val onClick: (Int) -> Unit
+    private val onDelete: (PostUi.Success) -> Unit,
+    private val onFavorite: (PostUi.Success) -> Unit
 ) : ListAdapter<PostUi.Success, PostsAdapter.BaseViewHolder>(DiffUtilCallback<PostUi.Success>()) {
     private var countCreateViewHolder = 0
     private var countBindViewHolder = 0
@@ -18,6 +19,7 @@ class PostsAdapter(
         fun bind(item: PostUi.Success) {
             view.tvTitle.text = item.title
             view.root.startAnimation(AnimationUtils.loadAnimation(view.root.context, R.anim.main_anim))
+            bindFavorite(item)
         }
 
         fun bindFavorite(item: PostUi.Success) {
@@ -34,11 +36,11 @@ class PostsAdapter(
         )
         val holder = BaseViewHolder(view)
         holder.apply {
-            /*view.tvTitle.setOnClickListener {
-                onClick(adapterPosition)
-            }*/
+            view.root.setOnClickListener {
+                onDelete(getItem(adapterPosition))
+            }
             view.icFavorite.setOnClickListener {
-                onClick(adapterPosition)
+                onFavorite(getItem(adapterPosition))
             }
         }
         return holder
