@@ -1,14 +1,11 @@
 package com.example.studying.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.elveum.elementadapter.SimpleBindingAdapter
-import com.elveum.elementadapter.adapter
-import com.elveum.elementadapter.addBinding
 import com.elveum.elementadapter.simpleAdapter
 import com.example.studying.R
 import com.example.studying.databinding.ActivityMainBinding
@@ -53,8 +50,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                     bindFavorite()
-                }
-                else if (payloads[0] == true) {
+                } else if (payloads[0] == true) {
                     bindFavorite()
                 }
             }
