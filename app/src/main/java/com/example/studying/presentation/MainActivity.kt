@@ -1,6 +1,7 @@
 package com.example.studying.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             bindWithPayloads { item, payloads ->
-
                 if (payloads.isEmpty()) {
                     tvTitle.text = item.title
                     root.startAnimation(
@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity() {
 
             listeners {
                 root.onClick {
+                    mainViewModel.delete(it)
+                }
+                icFavorite.onClick {
                     mainViewModel.setFavorite(index())
                 }
             }

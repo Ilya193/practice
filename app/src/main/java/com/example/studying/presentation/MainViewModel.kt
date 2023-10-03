@@ -38,8 +38,8 @@ class MainViewModel(
         }
     }
 
-    fun delete(index: Int) {
-        mainPosts.removeAt(index)
+    fun delete(item: PostUi.Success) {
+        mainPosts.remove(item)
         val posts = mainPosts.map { it.copy() }
         _uiState.postValue(PostUiState.Success(posts))
     }
