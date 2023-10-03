@@ -16,8 +16,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val mainViewModel: MainViewModel by viewModel()
-    private val adapter = PostsAdapter { title ->
-        Snackbar.make(binding.root, title, Snackbar.LENGTH_SHORT).show()
+    private val adapter = PostsAdapter { index ->
+        mainViewModel.setFavorite(index)
+    //Snackbar.make(binding.root, title, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

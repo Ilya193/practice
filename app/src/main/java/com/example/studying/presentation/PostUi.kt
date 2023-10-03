@@ -7,9 +7,11 @@ sealed class PostUi {
         val id: Int,
         val title: String,
         val body: String,
+        val isFavorite: Boolean = false
     ) : PostUi(), Comparing<Success> {
         override fun same(item: Success): Boolean = id == item.id
         override fun sameContent(item: Success): Boolean = this == item
+        override fun changePayload(item: Success): Boolean = isFavorite != item.isFavorite
     }
 }
 

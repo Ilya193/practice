@@ -9,7 +9,7 @@ import com.example.studying.R
 import com.example.studying.databinding.PostLayoutBinding
 
 class PostsAdapter(
-    private val onClick: (String) -> Unit
+    private val onClick: (Int) -> Unit
 ) : ListAdapter<PostUi.Success, PostsAdapter.BaseViewHolder>(DiffUtilCallback<PostUi.Success>()) {
     private var countCreateViewHolder = 0
     private var countBindViewHolder = 0
@@ -19,17 +19,38 @@ class PostsAdapter(
             view.tvTitle.text = item.title
             view.root.startAnimation(AnimationUtils.loadAnimation(view.root.context, R.anim.main_anim))
         }
+
+        fun bindFavorite(item: PostUi.Success) {
+            if (item.isFavorite)
+                view.icFavorite.setBackgroundResource(R.drawable.baseline_favorite_24)
+            else
+                view.icFavorite.setBackgroundResource(R.drawable.baseline_favorite_border_24)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val view = PostLayoutBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
-        ).apply {
-            tvTitle.setOnClickListener {
-                onClick(tvTitle.text.toString())
+        )
+        val holder = BaseViewHolder(view)
+        holder.apply {
+            /*view.tvTitle.setOnClickListener {
+                onClick(adapterPosition)
+            }*/
+            view.icFavorite.setOnClickListener {
+                onClick(adapterPosition)
             }
         }
-        return BaseViewHolder(view)
+        return holder
+    }
+
+    override fun onBindViewHolder(
+        holder: BaseViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) super.onBindViewHolder(holder, position, payloads)
+        else if (payloads[0] == true) holder.bindFavorite(getItem(position))
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {

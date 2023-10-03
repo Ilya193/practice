@@ -17,6 +17,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<PostUiState>()
+    private var mainPosts = mutableListOf<PostUi.Success>()
     val uiState: LiveData<PostUiState> get() = _uiState
 
     fun fetchPosts() {
@@ -27,6 +28,7 @@ class MainViewModel(
                     val posts = result.data.map {
                         mapper.map(it)
                     }
+                    mainPosts = posts.map { it.copy() }.toMutableList()
                     _uiState.postValue(PostUiState.Success(posts))
                 }
                 is Result.Error -> {
@@ -34,5 +36,17 @@ class MainViewModel(
                 }
             }
         }
+    }
+
+    fun delete(index: Int) {
+        mainPosts.removeAt(index)
+        val posts = mainPosts.map { it.copy() }
+        _uiState.postValue(PostUiState.Success(posts))
+    }
+
+    fun setFavorite(index: Int) {
+        mainPosts[index] = mainPosts[index].copy(isFavorite = !mainPosts[index].isFavorite)
+        val posts = mainPosts.map { it.copy() }
+        _uiState.postValue(PostUiState.Success(posts))
     }
 }
