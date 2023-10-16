@@ -29,10 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.uiState.observe(this) {
-            when (it) {
-                is StateInput.Success -> binding.inputLayout.error = null
-                is StateInput.Error -> binding.inputLayout.error = it.msg
-            }
+            binding.inputLayout.error = if (it is StateInput.Error) it.msg else null
         }
     }
 }
