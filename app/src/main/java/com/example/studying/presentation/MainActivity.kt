@@ -1,24 +1,21 @@
 package com.example.studying.presentation
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.example.studying.core.BaseTextWatcher
-import com.example.studying.core.MessagesAdapter
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity(), Listeners {
+class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
     private val viewModel: MessagesViewModel by viewModel()
-    private val adapter = MessagesAdapter(this)
+    private val adapter = MessagesAdapter(::onClick)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,17 +43,10 @@ class MainActivity : AppCompatActivity(), Listeners {
             binding.messageSave.setText("")
         }
 
-        binding.search.addTextChangedListener(object : BaseTextWatcher() {
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0.toString().isNotEmpty()) {
-                    viewModel.search(p0.toString())
-                    enabledUi(false)
-                }
-                else {
-                    viewModel.search(p0.toString())
-                    enabledUi(true)
-                }
-            }
+        binding.search.addTextChangedListener(onTextChanged = { text, _, _, _ ->
+            viewModel.search(text.toString())
+            if (text.toString().isNotEmpty()) enabledUi(false)
+            else enabledUi(true)
         })
     }
 
@@ -65,7 +55,7 @@ class MainActivity : AppCompatActivity(), Listeners {
         binding.messageSave.isEnabled = data
     }
 
-    override fun onClick(message: MessageUi) {
+    private fun onClick(message: MessageUi) {
         viewModel.deleteMessage(message)
     }
 }
