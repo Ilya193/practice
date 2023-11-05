@@ -33,10 +33,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        timer = timer(initialDelay = 10, period = 600L) {
+        timer = timer(initialDelay = 10, period = 400L) {
             runOnUiThread {
                 binding.cardView.animate().scaleX(2f).scaleY(2f).alpha(0f).apply {
-                    duration = 400
+                    duration = 250
                     withEndAction {
                         setProperties()
                     }
