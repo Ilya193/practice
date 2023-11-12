@@ -1,6 +1,8 @@
 package com.example.studying
 
+import android.content.Intent
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -13,6 +15,12 @@ class MessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        Log.d("attadag", "onMessageReceived: ${message.notification?.title} ${message.notification?.body}")
+        val title = message.notification?.title
+        val body = message.notification?.body
+        Log.d("attadag", "onMessageReceived: $title $body")
+        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent("MESSAGE").apply {
+            putExtra("TITLE", title)
+            putExtra("BODY", body)
+        })
     }
 }
