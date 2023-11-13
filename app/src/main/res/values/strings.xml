@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">studying</string>
+    <string name="need_permission">Мне нужно это разрешение, чтобы показывать уведомление</string>
+    <string name="open_settings">Открыть найстройки</string>
 </resources>
