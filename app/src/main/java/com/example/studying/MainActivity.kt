@@ -10,7 +10,12 @@ import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.elveum.elementadapter.simpleAdapter
 import com.example.studying.databinding.ActivityMainBinding
+import com.example.studying.databinding.ItemImageBinding
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
@@ -18,16 +23,27 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val musics = mutableListOf<Uri>()
+    private val musics = mutableListOf<String>()
+
+    private val adapter = simpleAdapter<String, ItemImageBinding> {
+        areItemsSame = { oldItem, newItem ->
+            oldItem == newItem
+        }
+
+        bind {
+            image.load(Uri.parse(it))
+            filename.text = it.substringAfterLast("/")
+        }
+    }
 
     private val permissionReadExternalStorage =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
             if (result) {
-                getAllAudio()
+                getAllImages()
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) ||
-                        shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_AUDIO)) {
+                        shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
                         Snackbar.make(
                             binding.root,
                             "i need this permission",
@@ -38,36 +54,38 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    private fun getAllAudio() {
+    private fun getAllImages() {
         contentResolver.query(
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-            arrayOf(MediaStore.Audio.AudioColumns.DATA),
-            MediaStore.Audio.Media.IS_MUSIC,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(MediaStore.Images.ImageColumns.DATA),
+            null,
             null,
             null
         )?.use { cursor ->
             while (cursor.moveToNext()) {
-                val data = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
+                val data = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
                 Log.d("attadag", "attadag ${cursor.getString(data)}")
-                //musics.add(Uri.parse(cursor.getString(data)))
+                musics.add(cursor.getString(data))
             }
         }
+        adapter.submitList(musics)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binding.images.adapter = adapter
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     this,
-                    Manifest.permission.READ_MEDIA_AUDIO
+                    Manifest.permission.READ_MEDIA_IMAGES
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                getAllAudio()
+                getAllImages()
             }
             else {
-                permissionReadExternalStorage.launch(Manifest.permission.READ_MEDIA_AUDIO)
+                permissionReadExternalStorage.launch(Manifest.permission.READ_MEDIA_IMAGES)
             }
         } else {
             if (ContextCompat.checkSelfPermission(
@@ -75,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                getAllAudio()
+                getAllImages()
             }
             else {
                 permissionReadExternalStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
