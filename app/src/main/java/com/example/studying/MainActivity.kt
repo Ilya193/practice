@@ -40,20 +40,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             binding.viewPager.setPageTransformer(transform)
-
-            binding.viewPager.registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
-                private var index = 0
-
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    index = position
-                }
-
-                override fun onPageScrollStateChanged(state: Int) {
-                    super.onPageScrollStateChanged(state)
-                }
-            })
         }
     }
 }
