@@ -13,8 +13,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.elveum.elementadapter.adapter
+import com.elveum.elementadapter.addBinding
 import com.elveum.elementadapter.simpleAdapter
 import com.example.studying.databinding.ActivityMainBinding
+import com.example.studying.databinding.EmptyItemBinding
 import com.example.studying.databinding.ItemImageBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -23,16 +26,25 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val musics = mutableListOf<String>()
+    private val musics = mutableListOf<Image>()
 
-    private val adapter = simpleAdapter<String, ItemImageBinding> {
-        areItemsSame = { oldItem, newItem ->
-            oldItem == newItem
+    private val adapter = adapter<Image> {
+        addBinding<Image.Success, ItemImageBinding> {
+            bind {
+                image.load(Uri.parse(it.path))
+                filename.text = it.path.substringAfterLast("/")
+            }
         }
 
-        bind {
-            image.load(Uri.parse(it))
-            filename.text = it.substringAfterLast("/")
+        addBinding<Image.NotFound, EmptyItemBinding> {
+            listeners {
+                btnRetry.onClick {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                        checkPermission(Manifest.permission.READ_MEDIA_IMAGES)
+                    else
+                        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                }
+            }
         }
     }
 
@@ -64,40 +76,36 @@ class MainActivity : AppCompatActivity() {
         )?.use { cursor ->
             while (cursor.moveToNext()) {
                 val data = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
-                Log.d("attadag", "attadag ${cursor.getString(data)}")
-                musics.add(cursor.getString(data))
+                musics.add(Image.Success(cursor.getString(data)))
             }
         }
-        adapter.submitList(musics)
+        if (musics.isEmpty())
+            adapter.submitList(listOf(Image.NotFound))
+        else
+            adapter.submitList(musics)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        binding.images.adapter = adapter
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_MEDIA_IMAGES
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                getAllImages()
-            }
-            else {
-                permissionReadExternalStorage.launch(Manifest.permission.READ_MEDIA_IMAGES)
-            }
-        } else {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                getAllImages()
-            }
-            else {
-                permissionReadExternalStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            checkPermission(Manifest.permission.READ_MEDIA_IMAGES)
+        else
+            checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+        binding.images.adapter = adapter
+    }
+
+    private fun checkPermission(permission: String) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            getAllImages()
+        }
+        else {
+            permissionReadExternalStorage.launch(permission)
         }
     }
 }
