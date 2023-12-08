@@ -46,4 +46,5 @@ dependencies {
     androidTestImplementation 'androidx.media:media:1.6.0'
     implementation 'com.elveum:element-adapter:0.6'
     implementation("io.coil-kt:coil:2.5.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 }
