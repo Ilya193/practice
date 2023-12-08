@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ImagesFragment">
 
     <LinearLayout
@@ -12,25 +12,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/errorReadFile"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Стоит запрет на чтение файлов"
-            style="@style/TextAppearance.AppCompat.Title" />
+            android:text="Стоит запрет на чтение файлов" />
 
         <Button
             android:id="@+id/btnRetryError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/errorReadFile"
             android:layout_marginTop="10dp"
-            android:text="Разрешить"/>
+            android:text="Разрешить"
+            app:layout_constraintTop_toBottomOf="@id/errorReadFile" />
 
     </LinearLayout>
 
@@ -40,23 +40,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/error"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/not_found"
-            style="@style/TextAppearance.AppCompat.Title"/>
+            android:text="@string/not_found" />
 
         <Button
             android:id="@+id/btnRetryEmpty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/retry"/>
+            android:text="@string/retry" />
 
     </LinearLayout>
 
@@ -64,7 +64,7 @@
         android:id="@+id/images"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:spanCount="4"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

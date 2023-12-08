@@ -15,10 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import com.elveum.elementadapter.adapter
-import com.elveum.elementadapter.addBinding
 import com.elveum.elementadapter.simpleAdapter
-import com.example.studying.databinding.EmptyItemBinding
 import com.example.studying.databinding.FragmentImagesBinding
 import com.example.studying.databinding.ItemImageBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -58,7 +55,7 @@ class ImagesFragment : BottomSheetDialogFragment() {
         listeners {
             image.onClick {
                 it.setImage { path ->
-                    setFragmentResult(IMAGE_URI_REQUEST, bundleOf( IMAGE_URI_KEY to path))
+                    setFragmentResult(IMAGE_URI_REQUEST, bundleOf(IMAGE_URI_KEY to path))
                 }
                 dismiss()
             }
@@ -97,8 +94,7 @@ class ImagesFragment : BottomSheetDialogFragment() {
         ) {
             binding.containerError.visibility = View.GONE
             getAllImages()
-        }
-        else {
+        } else {
             permissionReadExternalStorage.launch(permission)
         }
     }
@@ -108,8 +104,7 @@ class ImagesFragment : BottomSheetDialogFragment() {
             binding.btnRetryError.setOnClickListener {
                 checkPermission()
             }
-        }
-        else {
+        } else {
             binding.btnRetryError.setOnClickListener {
                 settings.launch(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.parse("package:${context?.packageName}")
@@ -136,8 +131,7 @@ class ImagesFragment : BottomSheetDialogFragment() {
             adapter.submitList(listOf())
             binding.images.visibility = View.GONE
             binding.containerEmpty.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             adapter.submitList(musics.reversed())
             binding.images.visibility = View.VISIBLE
             binding.containerEmpty.visibility = View.GONE
