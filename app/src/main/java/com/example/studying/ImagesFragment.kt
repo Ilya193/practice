@@ -17,6 +17,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.elveum.elementadapter.adapter
 import com.elveum.elementadapter.addBinding
+import com.elveum.elementadapter.simpleAdapter
 import com.example.studying.databinding.EmptyItemBinding
 import com.example.studying.databinding.FragmentImagesBinding
 import com.example.studying.databinding.ItemImageBinding
@@ -39,44 +40,26 @@ class ImagesFragment : BottomSheetDialogFragment() {
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     binding.containerError.visibility = View.VISIBLE
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) ||
-                        shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
-                        binding.btnRetry.setOnClickListener {
-                            checkPermission()
-                        }
-                    }
-                     else {
-                        binding.btnRetry.setOnClickListener {
-                            settings.launch(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                data = Uri.parse("package:${context?.packageName}")
-                            })
-                        }
-                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                        handleErrorPermission(Manifest.permission.READ_MEDIA_IMAGES)
+                    else handleErrorPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
             }
         }
 
     private val musics = mutableListOf<Image>()
 
-    private val adapter = adapter<Image> {
-        addBinding<Image.Success, ItemImageBinding> {
-            bind {
-                it.show(image)
-            }
-
-            listeners {
-                image.onClick {
-                    it.setImage { path ->
-                        setFragmentResult(IMAGE_URI_REQUEST, bundleOf( IMAGE_URI_KEY to path))
-                    }
-                    dismiss()
-                }
-            }
+    private val adapter = simpleAdapter<Image, ItemImageBinding> {
+        bind {
+            it.show(image)
         }
 
-        addBinding<Image.NotFound, EmptyItemBinding> {
-            listeners {
-                checkPermission()
+        listeners {
+            image.onClick {
+                it.setImage { path ->
+                    setFragmentResult(IMAGE_URI_REQUEST, bundleOf( IMAGE_URI_KEY to path))
+                }
+                dismiss()
             }
         }
     }
@@ -93,6 +76,9 @@ class ImagesFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
         binding.images.adapter = adapter
+        binding.btnRetryEmpty.setOnClickListener {
+            checkPermission()
+        }
     }
 
     private fun checkPermission() {
@@ -100,25 +86,6 @@ class ImagesFragment : BottomSheetDialogFragment() {
             checkPermission(Manifest.permission.READ_MEDIA_IMAGES)
         else
             checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    }
-
-    private fun getAllImages() {
-        context?.contentResolver?.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            arrayOf(MediaStore.Images.ImageColumns.DATA),
-            null,
-            null,
-            null
-        )?.use { cursor ->
-            while (cursor.moveToNext()) {
-                val data = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
-                musics.add(Image.Success(cursor.getString(data)))
-            }
-        }
-        if (musics.isEmpty())
-            adapter.submitList(listOf(Image.NotFound))
-        else
-            adapter.submitList(musics.reversed())
     }
 
     private fun checkPermission(permission: String) {
@@ -132,6 +99,47 @@ class ImagesFragment : BottomSheetDialogFragment() {
         }
         else {
             permissionReadExternalStorage.launch(permission)
+        }
+    }
+
+    private fun handleErrorPermission(permission: String) {
+        if (shouldShowRequestPermissionRationale(permission)) {
+            binding.btnRetryError.setOnClickListener {
+                checkPermission()
+            }
+        }
+        else {
+            binding.btnRetryError.setOnClickListener {
+                settings.launch(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:${context?.packageName}")
+                })
+            }
+        }
+    }
+
+    private fun getAllImages() {
+        context?.contentResolver?.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(MediaStore.Images.ImageColumns.DATA),
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            while (cursor.moveToNext()) {
+                val data = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+                musics.add(Image(cursor.getString(data)))
+            }
+        }
+
+        if (musics.isEmpty()) {
+            adapter.submitList(listOf())
+            binding.images.visibility = View.GONE
+            binding.containerEmpty.visibility = View.VISIBLE
+        }
+        else {
+            adapter.submitList(musics.reversed())
+            binding.images.visibility = View.VISIBLE
+            binding.containerEmpty.visibility = View.GONE
         }
     }
 

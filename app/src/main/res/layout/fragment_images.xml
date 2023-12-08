@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ImagesFragment">
 
@@ -25,12 +25,38 @@
             style="@style/TextAppearance.AppCompat.Title" />
 
         <Button
-            android:id="@+id/btnRetry"
+            android:id="@+id/btnRetryError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/errorReadFile"
             android:layout_marginTop="10dp"
             android:text="Разрешить"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/containerEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_found"
+            style="@style/TextAppearance.AppCompat.Title"/>
+
+        <Button
+            android:id="@+id/btnRetryEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/retry"/>
 
     </LinearLayout>
 
