@@ -36,6 +36,7 @@ class ImagesFragment : BottomSheetDialogFragment() {
     private val permissionReadExternalStorage =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
             if (result) {
+                binding.containerError.visibility = View.GONE
                 getAllImages()
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
