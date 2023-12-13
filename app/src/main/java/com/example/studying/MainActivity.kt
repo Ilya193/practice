@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.Constraints
 import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.example.studying.databinding.ActivityMainBinding
 import java.util.concurrent.TimeUnit
@@ -18,17 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val request = OneTimeWorkRequest.Builder(TestWorker::class.java)
-            .setInitialDelay(5, TimeUnit.SECONDS)
-            .setConstraints(Constraints.Builder().setRequiresCharging(false).build())
+        val request = PeriodicWorkRequest.Builder(TestWorker::class.java, 15, TimeUnit.MINUTES)
             .build()
-
         WorkManager.getInstance(this).enqueue(request)
-
-        binding.tvName.setOnClickListener {
-            val name = getSharedPreferences("settings", Context.MODE_PRIVATE)
-                .getInt("number", -1)
-            binding.tvName.text = name.toString()
-        }
     }
 }
