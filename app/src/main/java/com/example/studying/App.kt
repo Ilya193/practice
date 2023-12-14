@@ -1,12 +1,14 @@
 package com.example.studying
 
 import android.app.Application
-import com.example.studying.data.DateRepositoryImpl
-import com.example.studying.data.DateService
-import com.example.studying.domain.DateRepository
-import com.example.studying.domain.FetchDateUseCase
+import com.example.studying.data.UploadRepositoryImpl
+import com.example.studying.data.UploadService
+import com.example.studying.domain.UploadRepository
+import com.example.studying.domain.UploadUseCase
 import com.example.studying.domain.ResourceProvider
 import com.example.studying.presentation.MainViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -28,7 +30,7 @@ class App : Application() {
 
 val module = module {
     viewModel<MainViewModel> {
-        MainViewModel(get(), get())
+        MainViewModel(get())
     }
 
     factory<Converter.Factory> {
@@ -39,19 +41,19 @@ val module = module {
         ResourceProvider.Base(get())
     }
 
-    factory<FetchDateUseCase> {
-        FetchDateUseCase(get())
+    factory<UploadUseCase> {
+        UploadUseCase(get())
     }
 
-    single<DateService> {
+    single<UploadService> {
         Retrofit.Builder()
-            .baseUrl("https://isdayoff.ru/")
+            .baseUrl("http://192.168.1.3:8080")
             .addConverterFactory(get())
             .build()
-            .create(DateService::class.java)
+            .create(UploadService::class.java)
     }
 
-    factory<DateRepository> {
-        DateRepositoryImpl(get())
+    factory<UploadRepository> {
+        UploadRepositoryImpl(get())
     }
 }
