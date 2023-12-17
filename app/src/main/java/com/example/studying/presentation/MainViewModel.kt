@@ -15,10 +15,11 @@ class MainViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
-    private val _upload = MutableLiveData<String>()
-    val upload: LiveData<String> get() = _upload
+    private val _upload = MutableLiveData<EventWrapper<Int>>()
+    val upload: LiveData<EventWrapper<Int>> get() = _upload
 
-    fun upload(file: File) = viewModelScope.launch(dispatcher) {
-        uploadUseCase(file)
+    fun upload(file: File, id: Int) = viewModelScope.launch(dispatcher) {
+        val id = uploadUseCase(file, id)
+        _upload.postValue(EventWrapper.Single(id))
     }
 }

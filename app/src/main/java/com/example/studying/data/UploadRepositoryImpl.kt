@@ -14,11 +14,11 @@ import java.net.UnknownHostException
 class UploadRepositoryImpl(
     private val service: UploadService,
 ) : UploadRepository {
-    override suspend fun upload(file: File) {
-        service.upload(
+    override suspend fun upload(file: File, id: Int): Int {
+        return service.upload(
             MultipartBody.Part.createFormData(
                 "file", file.name, file.asRequestBody("multipart/form-data".toMediaType())
-            )
+            ), id
         )
     }
 
