@@ -43,17 +43,15 @@ class MainActivity : AppCompatActivity() {
                 oldItem.uploading != newItem.uploading
             }
 
-            bindWithPayloads() { item, payloads ->
+            bindWithPayloads { item, payloads ->
+                println("attadag $item $payloads")
                 if (payloads.isNotEmpty()) {
                     val result = payloads[0] as Boolean
-                    if (result) {
-                        if (item.uploading) uploading.visibility = View.VISIBLE
-                        else uploading.visibility = View.GONE
-                    }
+                    if (result) status.text = if (item.uploading) "Файл загружается" else ""
                 } else {
-                    if (item.uploading) uploading.visibility = View.VISIBLE
-                    else uploading.visibility = View.GONE
+                    status.text = if (item.uploading) "Файл загружается" else ""
                     image.load(item.path)
+                    status.text = ""
                 }
             }
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.studying.domain.UploadUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
