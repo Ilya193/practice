@@ -47,7 +47,7 @@ val module = module {
 
     single<UploadService> {
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.8:8080")
+            .baseUrl("http://192.168.1.6:8080")
             .addConverterFactory(get())
             .build()
             .create(UploadService::class.java)

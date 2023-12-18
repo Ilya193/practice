@@ -26,6 +26,17 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private val testAdapter = ImagesAdapter { item ->
+        images.find {
+            it == item
+        }?.let {
+            val index = images.indexOf(it)
+            images[index] = it.copy(uploading = !it.uploading)
+            submitList()
+            viewModel.upload(File(item.path), images[index].id)
+        }
+    }
+
     private var index = 0
     private val images = mutableListOf<ItemUi>()
     private val viewModel: MainViewModel by viewModel()
@@ -44,14 +55,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             bindWithPayloads { item, payloads ->
-                println("attadag $item $payloads")
                 if (payloads.isNotEmpty()) {
                     val result = payloads[0] as Boolean
                     if (result) status.text = if (item.uploading) "Файл загружается" else ""
                 } else {
                     status.text = if (item.uploading) "Файл загружается" else ""
                     image.load(item.path)
-                    status.text = ""
                 }
             }
 
@@ -71,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun submitList() {
-        adapter.submitList(images.reversed())
+        testAdapter.submitList(images.reversed())
     }
 
     private val permissionReadExternalStorage =
@@ -105,7 +114,7 @@ class MainActivity : AppCompatActivity() {
             takePicture.launch(uri)
         }
 
-        binding.images.adapter = adapter
+        binding.images.adapter = testAdapter
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             checkPermission(android.Manifest.permission.READ_MEDIA_IMAGES)
@@ -150,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                 val filepath = cursor.getString(columnIndex)
                 images.add(ItemUi(id = index++, path = filepath))
             }
-            adapter.submitList(images.reversed())
+            testAdapter.submitList(images.reversed())
         }
     }
 }
