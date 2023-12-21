@@ -9,8 +9,19 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportFragmentManager.fragmentFactory = TestFragmentFactory {
+            BlankFragment(User(System.currentTimeMillis(), "User"))
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.root.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, BlankFragment::class.java, null)
+                .commit()
+        }
     }
 }
