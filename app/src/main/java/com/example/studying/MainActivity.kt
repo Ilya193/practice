@@ -12,5 +12,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.root.setOnClickListener {
+            StartGameDialogFragment().show(supportFragmentManager, null)
+        }
     }
 }
