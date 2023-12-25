@@ -7,9 +7,27 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="@id/items"
+        app:layout_constraintBottom_toTopOf="@id/items"/>
+
+    <TextView
+        android:id="@+id/money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/items"
+        app:layout_constraintBottom_toTopOf="@id/items"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/items"
+        android:layout_width="300dp"
+        android:layout_height="450dp"
+        app:spanCount="4"
+        tools:listitem="@layout/item"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
