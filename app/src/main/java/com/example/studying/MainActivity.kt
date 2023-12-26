@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.customView.setOnClickListener { view ->
-            val valueAnimator = ValueAnimator.ofFloat(0f, 360f)
+            val valueAnimator = ValueAnimator.ofFloat(0f, 3600f)
             valueAnimator.addUpdateListener {
                 val value = it.animatedValue as Float
                 view.rotation = value
