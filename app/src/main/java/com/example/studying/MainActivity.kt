@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            println("attadag onServiceDisconnected")
             binder?.unsubscribe()
             binder = null
         }
@@ -34,12 +33,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        binding.root.setOnClickListener {
-            Intent(this, BoundService::class.java).also { intent ->
-                startService(intent)
-            }
-        }
     }
 
     override fun onResume() {
@@ -52,5 +45,6 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         unbindService(connection)
+        binder?.unsubscribe()
     }
 }
