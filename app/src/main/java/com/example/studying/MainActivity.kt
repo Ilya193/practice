@@ -45,6 +45,5 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         unbindService(connection)
-        binder?.unsubscribe()
     }
 }

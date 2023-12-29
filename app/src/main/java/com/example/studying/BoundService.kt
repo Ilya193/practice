@@ -11,6 +11,11 @@ class BoundService : Service() {
     private var block: ((Int) -> Unit)? = null
     override fun onBind(intent: Intent?): IBinder? = LocalBinder()
 
+    override fun onUnbind(intent: Intent?): Boolean {
+        this@BoundService.block =  null
+        return false
+    }
+
     inner class LocalBinder : Binder() {
         fun subscribe(block: (Int) -> Unit) {
             this@BoundService.block = block
