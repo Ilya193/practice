@@ -5,11 +5,13 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.elveum.elementadapter.SimpleBindingAdapter
 import com.elveum.elementadapter.simpleAdapter
 import com.example.studying.R
 import com.example.studying.databinding.ActivityMainBinding
 import com.example.studying.databinding.PostLayoutBinding
+import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -19,9 +21,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val mainViewModel: MainViewModel by viewModel()
-    //private val adapter = PostsAdapter({mainViewModel.delete(it)}, {mainViewModel.setFavorite(it)})
+    private val adapter = PostsAdapter({mainViewModel.delete(it)}, {mainViewModel.setFavorite(it)})
 
-    private val adapter: SimpleBindingAdapter<PostUi.Success> by lazy {
+    /*private val adapter: SimpleBindingAdapter<PostUi.Success> by lazy {
         simpleAdapter<PostUi.Success, PostLayoutBinding> {
             areItemsSame = { old, new ->
                 old.same(new)
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,9 +76,13 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
         );
 
+        binding.btnAdd.setOnClickListener {
+            mainViewModel.add()
+        }
 
         binding.rvPosts.adapter = adapter
         binding.rvPosts.setHasFixedSize(true)
+        binding.rvPosts.itemAnimator = ScaleInBottomAnimator()
 
         mainViewModel.fetchPosts()
 

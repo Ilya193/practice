@@ -11,6 +11,7 @@ import com.example.studying.domain.ToUiMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class MainViewModel(
     private val postsUseCase: FetchPostsUseCase,
@@ -39,20 +40,24 @@ class MainViewModel(
         }
     }
 
-    fun delete(item: PostUi.Success) {
+    fun delete(item: PostUi.Success) = viewModelScope.launch(Dispatchers.IO) {
         mainPosts.remove(item)
         val posts = mainPosts.map { it.copy() }
         _uiState.postValue(PostUiState.Success(posts))
-        Log.d("attadag", "delete $posts")
     }
 
-    fun setFavorite(item: PostUi.Success) {
+    fun add()  = viewModelScope.launch(Dispatchers.IO) {
+        mainPosts.add(2, PostUi.Success(Random.nextInt(1000, 500000), Random.nextInt(500000, 1000000), "title", "body"))
+        val posts = mainPosts.map { it.copy() }
+        _uiState.postValue(PostUiState.Success(posts))
+    }
+
+    fun setFavorite(item: PostUi.Success)  = viewModelScope.launch(Dispatchers.IO) {
         mainPosts = mainPosts.map {
             if (item.id == it.id) it.copy(isFavorite = !it.isFavorite)
             else it
         }.toMutableList()
         val posts = mainPosts.map { it.copy() }
         _uiState.postValue(PostUiState.Success(posts))
-        Log.d("attadag", "setFavorite $posts")
     }
 }
