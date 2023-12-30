@@ -1,15 +1,16 @@
 package com.example.studying.data
 
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class PostCloud(
-    @SerializedName("userId")
+    @Json(name = "userId")
     private val userId: Int,
-    @SerializedName("id")
+    @Json(name = "id")
     private val id: Int,
-    @SerializedName("title")
+    @Json(name = "title")
     private val title: String,
-    @SerializedName("body")
+    @Json(name = "body")
     private val body: String
 ) {
     fun map(): PostData = PostData(userId, id, title, body)

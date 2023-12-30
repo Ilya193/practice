@@ -10,11 +10,14 @@ import com.example.studying.domain.ToUiMapper
 import com.example.studying.presentation.BaseToUiMapper
 import com.example.studying.presentation.MainViewModel
 import com.example.studying.presentation.PostUi
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 val appModule = module {
     factory<Converter.Factory> {
@@ -28,10 +31,18 @@ val appModule = module {
             .build()
     }*/
 
-    single<PostsService> {
+    /*single<PostsService> {
         Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
             .addConverterFactory(get())
+            .build()
+            .create(PostsService::class.java)
+    }*/
+
+    single<PostsService> {
+        Retrofit.Builder()
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().add(KotlinJsonAdapterFactory()).build()))
             .build()
             .create(PostsService::class.java)
     }
