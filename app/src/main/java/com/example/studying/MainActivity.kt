@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val request = PeriodicWorkRequest.Builder(TestWorker::class.java, 15, TimeUnit.MINUTES)
+        val request = OneTimeWorkRequest.Builder(TestWorker::class.java)
             .build()
         WorkManager.getInstance(this).enqueue(request)
     }
