@@ -1,8 +1,6 @@
 package com.example.studying
 
-import android.animation.ValueAnimator
 import android.os.Bundle
-import android.view.animation.AnticipateOvershootInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.example.studying.databinding.ActivityMainBinding
 
@@ -15,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.customView.setOnClickListener { view ->
+        /*binding.customView.setOnClickListener { view ->
             val valueAnimator = ValueAnimator.ofFloat(0f, 3600f)
             valueAnimator.addUpdateListener {
                 val value = it.animatedValue as Float
@@ -24,6 +22,18 @@ class MainActivity : AppCompatActivity() {
             valueAnimator.interpolator = AnticipateOvershootInterpolator()
             valueAnimator.duration = 1500
             valueAnimator.start()
+        }*/
+
+        binding.clear.setOnClickListener {
+            binding.customView.clear()
+        }
+
+        binding.undo.setOnClickListener {
+            binding.customView.undo()
+        }
+
+        binding.save.setOnClickListener {
+            binding.customView.save()
         }
     }
 }
