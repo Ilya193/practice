@@ -1,6 +1,5 @@
 package com.example.studying
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,13 +15,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val takePicture = this.registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        it.data?.data?.let { fileUri ->
-            val file = getFileFromUri(fileUri)
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            val file = getFileFromUri(uri)
             //upload to server
-            //remove file from cache
         }
+        //remove file from cache
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.root.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            takePicture.launch(intent)
+            takePicture.launch("image/*")
         }
     }
 
