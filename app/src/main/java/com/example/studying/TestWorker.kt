@@ -23,10 +23,11 @@ class TestWorker(private val context: Context, workerParameters: WorkerParameter
             .create(PostsService::class.java)
 
     override suspend fun doWork(): Result {
+        val posts = retrofit.fetchPosts()
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_background)
-            .setContentTitle("BACKGROUND WORK")
-            .setContentText("background work")
+            .setContentTitle("BACKGROUND WORK ${posts.size}")
+            .setContentText("background work ${posts.size}")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(
                 PendingIntent.getActivity(
@@ -43,7 +44,6 @@ class TestWorker(private val context: Context, workerParameters: WorkerParameter
 
         notificationManager.notify(1, notification.build())
 
-        val posts = retrofit.fetchPosts()
         return Result.success()
     }
 
