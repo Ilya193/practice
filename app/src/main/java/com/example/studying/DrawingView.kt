@@ -50,7 +50,6 @@ class DrawingView @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> {
                 path.reset()
                 path.moveTo(x, y)
-                return true
             }
             MotionEvent.ACTION_MOVE -> {
                 path.lineTo(x, y)
