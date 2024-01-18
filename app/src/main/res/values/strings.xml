@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">studying</string>
+    <string name="password">Пароль</string>
+    <string name="nickname">Имя пользователя</string>
 </resources>

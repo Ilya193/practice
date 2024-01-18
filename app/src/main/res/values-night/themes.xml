@@ -2,5 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Studying" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 </resources>

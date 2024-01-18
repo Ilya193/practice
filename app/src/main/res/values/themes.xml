@@ -2,12 +2,14 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Studying" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="Theme.Studying" parent="Base.Theme.Studying" />
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/colorPrimary</item>
+        <item name="windowSplashScreenBackground">@color/windowBackground</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/music_note</item>
         <item name="postSplashScreenTheme">@style/Theme.Studying</item>
     </style>
