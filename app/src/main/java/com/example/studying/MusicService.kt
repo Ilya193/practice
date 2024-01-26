@@ -55,7 +55,7 @@ class MusicService : Service() {
         mediaPlayer.start()
 
         mediaPlayer.setOnCompletionListener {
-            setPlaybackState(PlaybackStateCompat.STATE_STOPPED, 0)
+            setPlaybackState(PlaybackStateCompat.STATE_PAUSED, 0)
         }
 
         val metadata = MediaMetadataCompat.Builder()

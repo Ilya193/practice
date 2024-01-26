@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity() {
 
     private val permission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-            ContextCompat.startForegroundService(this, Intent(this, MusicService::class.java))
+            if (result)
+                ContextCompat.startForegroundService(this, Intent(this, MusicService::class.java))
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
