@@ -117,6 +117,11 @@ class MusicService : Service() {
 
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
+        val stopButtonIntent = Intent(this, MusicService::class.java)
+        stopButtonIntent.action = "ACTION_STOP"
+        val stopButtonPendingIntent =
+            PendingIntent.getService(this, 0, stopButtonIntent, PendingIntent.FLAG_IMMUTABLE)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 "CHANNEL_ID",
@@ -134,6 +139,7 @@ class MusicService : Service() {
             .addAction(R.drawable.play_arrow, "Play", playButtonPendingIntent)
             .addAction(R.drawable.pause, "Pause", pauseButtonPendingIntent)
             .addAction(R.drawable.skip_next, "Next", nextButtonPendingIntent)
+            .addAction(R.drawable.ic_stop, "Stop", stopButtonPendingIntent)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1, 2)
                     .setMediaSession(mediaSession.sessionToken)
@@ -148,6 +154,7 @@ class MusicService : Service() {
             "ACTION_PLAY" -> mediaSession.controller.transportControls.play()
             "ACTION_PAUSE" -> mediaSession.controller.transportControls.pause()
             "ACTION_NEXT" -> mediaSession.controller.transportControls.skipToNext()
+            "ACTION_STOP" -> mediaSession.controller.transportControls.stop()
         }
         return START_NOT_STICKY
     }
