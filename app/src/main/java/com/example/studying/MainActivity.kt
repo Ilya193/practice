@@ -42,7 +42,6 @@ class MainActivity() : AppCompatActivity() {
 
 class CustomReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        println("s149 onReceive")
         context?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()?.putInt("random", Random.nextInt())?.apply()
     }
 
