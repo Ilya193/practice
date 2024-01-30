@@ -49,12 +49,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val imageLoader = ImageLoader.Builder(this)
-            .components {
-                add(GifDecoder.Factory())
-            }
             .build()
 
-        binding.image.load("https://automotive-heritage.com/upload/a1540491372.gif", imageLoader)
+        binding.image.load("") {
+            listener(onStart = {
+                binding.loading.visibility = View.VISIBLE
+            }, onSuccess = { _, _ ->
+                binding.loading.visibility = View.GONE
+            }, onError = { _, _ ->
+                binding.loading.visibility = View.GONE
+            })
+        }
 
         //Glide.with(this).asGif().load("https://automotive-heritage.com/upload/a1540491372.gif").into(binding.image)
 
