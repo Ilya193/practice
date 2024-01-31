@@ -26,6 +26,10 @@ val module = module {
         FirstViewModel(get())
     }
 
+    viewModel<SecondViewModel> {
+        SecondViewModel(get())
+    }
+
     val navigation = Navigation.Base()
 
     single<Navigation<Screen>> {
@@ -33,6 +37,10 @@ val module = module {
     }
 
     factory<FirstRouter> {
+        navigation
+    }
+
+    factory<SecondRouter> {
         navigation
     }
 }

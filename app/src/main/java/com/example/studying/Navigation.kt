@@ -1,5 +1,6 @@
 package com.example.studying
 
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
@@ -9,13 +10,21 @@ interface Navigation<T> {
     fun read(): LiveData<T>
     fun update(value: T)
 
-    class Base : Navigation<Screen>, FirstRouter {
+    class Base : Navigation<Screen>, FirstRouter, SecondRouter {
         private val liveData = MutableLiveData<Screen>()
 
         override fun read(): LiveData<Screen> = liveData
 
         override fun update(value: Screen) {
             liveData.value = value
+        }
+
+        override fun openSecond() {
+            update(SecondScreen())
+        }
+
+        override fun comeback() {
+            update(WarningScreen())
         }
 
         override fun coup() {
@@ -36,13 +45,23 @@ interface Screen {
         }
     }
 
+    abstract class Dialog(
+        private val fragment: DialogFragment,
+        private val tag: String? = null
+    ) : Screen {
+        override fun show(supportFragmentManager: FragmentManager, container: Int) {
+            fragment.show(supportFragmentManager, tag)
+        }
+    }
+
     abstract class ReplaceWithAddToBackStack(
         private val fragment: Fragment,
+        private val addToBackStack: String? = null
     ) : Screen {
         override fun show(supportFragmentManager: FragmentManager, container: Int) {
             supportFragmentManager.beginTransaction()
                 .replace(container, fragment)
-                .addToBackStack(null).commit()
+                .addToBackStack(addToBackStack).commit()
         }
     }
 
@@ -67,3 +86,5 @@ interface Screen {
 }
 
 class InitScreen : Screen.Replace(FirstFragment.newInstance())
+class SecondScreen : Screen.ReplaceWithAddToBackStack(SecondFragment.newInstance())
+class WarningScreen : Screen.Dialog(WarningDialogFragment.newInstance())

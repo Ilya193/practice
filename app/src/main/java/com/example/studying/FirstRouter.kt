@@ -1,3 +1,5 @@
 package com.example.studying
 
-interface FirstRouter : Router
+interface FirstRouter : Router {
+    fun openSecond()
+}

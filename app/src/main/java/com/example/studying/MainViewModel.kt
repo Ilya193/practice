@@ -10,5 +10,7 @@ class MainViewModel(
         if (first) navigation.update(InitScreen())
     }
 
+    fun update(screen: Screen) = navigation.update(screen)
+
     fun liveData() = navigation.read()
 }

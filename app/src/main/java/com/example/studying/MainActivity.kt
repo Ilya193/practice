@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), WarningListener {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -20,5 +20,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.liveData().observe(this) {
             it.show(supportFragmentManager, R.id.fragmentContainer)
         }
+    }
+
+    override fun exit() {
+        viewModel.update(Screen.Pop)
     }
 }
