@@ -12,22 +12,18 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModel()
 
-    private val adapter = InputAdapter(
-        add = {
-            viewModel.add()
-        },
-        delete = {
-            viewModel.delete()
-        }
-    )
+    private val adapter = TestAdapter {
+        viewModel.upload(it)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         binding.list.setHasFixedSize(true)
         binding.list.adapter = adapter
         viewModel.uiState.observe(this) {
-            adapter.submitList(it.toMutableList())
+            adapter.submitList(it)
         }
     }
 }

@@ -10,6 +10,6 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

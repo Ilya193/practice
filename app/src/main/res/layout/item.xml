@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.carousel.MaskableFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/input"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_background"/>
+
+    <ProgressBar
+        android:id="@+id/uploading"
+        android:layout_width="50dp"
         android:layout_height="50dp"
-        android:hint="Имя"/>
+        android:layout_gravity="bottom|end"
+        android:visibility="gone"/>
 
-</com.google.android.material.textfield.TextInputLayout>
+</com.google.android.material.carousel.MaskableFrameLayout>
