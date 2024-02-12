@@ -13,11 +13,11 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel()
 
     private val adapter = InputAdapter(
-        changeTextHidden = { position, newText ->
-            viewModel.changeTextHidden(position, newText)
+        add = {
+            viewModel.add()
         },
-        changeText = { position, newText ->
-            viewModel.changeText(position, newText)
+        delete = {
+            viewModel.delete()
         }
     )
 
@@ -27,12 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding.list.setHasFixedSize(true)
         binding.list.adapter = adapter
         viewModel.uiState.observe(this) {
-            adapter.submitList(it)
+            adapter.submitList(it.toMutableList())
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        viewModel.coup()
     }
 }

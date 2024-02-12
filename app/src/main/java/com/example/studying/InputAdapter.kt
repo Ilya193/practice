@@ -9,37 +9,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.studying.databinding.ItemBinding
 
 class InputAdapter(
-    private val changeTextHidden: (Int, String) -> Unit,
-    private val changeText: (Int, String) -> Unit
+    private val add: () -> Unit,
+    private val delete: () -> Unit
 ) : ListAdapter<User, InputAdapter.ViewHolder>(Diff()) {
 
-    inner class ViewHolder(private val view: ItemBinding) : RecyclerView.ViewHolder(view.root) {
-
-        init {
-            view.input.addTextChangedListener(afterTextChanged = {
-                changeText(adapterPosition, view.input.text.toString())
-            })
+    override fun submitList(list: MutableList<User>?) {
+        list?.let {
+            end = list.size - 5
+            start += 10
         }
+        super.submitList(list)
+    }
+
+    private var start = 20
+    private var end = currentList.size - 5
+
+    inner class ViewHolder(private val view: ItemBinding) : RecyclerView.ViewHolder(view.root) {
 
         fun bind(item: User) {
             view.input.setText(item.name)
         }
-
-        fun saveText() {
-            changeTextHidden(adapterPosition, view.input.text.toString())
-        }
-    }
-
-    override fun onViewDetachedFromWindow(holder: ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        holder.saveText()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (position == end) add()
+        if (position == start) delete()
         holder.bind(getItem(position))
+    }
 }
 
 data class User(
