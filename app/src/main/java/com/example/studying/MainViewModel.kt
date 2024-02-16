@@ -43,5 +43,6 @@ class MainViewModel(
     override fun onCleared() {
         super.onCleared()
         disposable?.dispose()
+        println("s419 onCleared")
     }
 }
