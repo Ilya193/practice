@@ -10,5 +10,5 @@ data class NoteDb(
     val text: String,
     val isFavorite: Boolean
 ) {
-    fun toItemUi(): NoteUi = NoteUi(id, text, isFavorite)
+    fun toItemUi(): NoteUi.Note = NoteUi.Note(id, text, isFavorite)
 }

@@ -19,11 +19,15 @@ class App : Application() {
                 }
 
                 factory<MainRepository> {
-                    MainRepository.Base(get())
+                    MainRepository.Base(get(), get())
                 }
 
                 single<NotesDao> {
                     Room.databaseBuilder(get(), NotesDb::class.java, "notes_db").build().notesDao()
+                }
+
+                factory<Mapper<NoteUi.Note, NoteDb>> {
+                    ToNoteDbMapper()
                 }
             })
         }

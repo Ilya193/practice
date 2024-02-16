@@ -23,10 +23,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        lifecycleScope.launchWhenStarted {
-
-        }
-
         binding.sendBtn.setOnClickListener {
             val text = binding.input.text.toString()
             if (text.isNotEmpty()) viewModel.addNote(text)

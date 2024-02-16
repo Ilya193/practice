@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">studying</string>
+    <string name="header">Избранное</string>
+    <string name="ordinary">Обычные</string>
 </resources>
