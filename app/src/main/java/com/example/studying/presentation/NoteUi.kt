@@ -27,12 +27,8 @@ sealed class NoteUi: DelegateItem {
         override fun id(item: DelegateItem): Boolean =
             id == (item as Note).id
 
-        override fun content(): Any {
-            return this
-        }
-
         override fun compareTo(item: DelegateItem): Boolean {
-            return (item as Note).content() == content()
+            return (item as Note) == this
         }
 
     }
@@ -47,10 +43,9 @@ sealed class NoteUi: DelegateItem {
 
         override fun id(item: DelegateItem): Boolean = this.toString() == (item as Header).toString()
 
-        override fun content(): Any = this
 
         override fun compareTo(item: DelegateItem): Boolean {
-            return (item as Header).content() == content()
+            return (item as Header) == this
         }
 
         override fun same(item: NoteUi): Boolean = this.toString() == item.toString()

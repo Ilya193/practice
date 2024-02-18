@@ -12,7 +12,6 @@ import com.example.studying.databinding.NoteItemBinding
 
 interface DelegateItem {
     fun id(item: DelegateItem): Boolean
-    fun content(): Any
     fun compareTo(item: DelegateItem): Boolean
     fun changePayload(item: DelegateItem): Any
 }
@@ -34,7 +33,7 @@ interface AdapterDelegate {
         }*/
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem) {
-            (holder as MainDelegateAdapter.NoteViewHolder).bind(item.content() as NoteUi.Note)
+            (holder as MainDelegateAdapter.NoteViewHolder).bind(item as NoteUi.Note)
         }
 
         override fun isOfViewType(item: DelegateItem): Boolean {
@@ -55,7 +54,7 @@ interface AdapterDelegate {
         }*/
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem) {
-            (holder as MainDelegateAdapter.HeaderViewHolder).bind(item.content() as NoteUi.Header)
+            (holder as MainDelegateAdapter.HeaderViewHolder).bind(item as NoteUi.Header)
         }
 
         override fun isOfViewType(item: DelegateItem): Boolean {
