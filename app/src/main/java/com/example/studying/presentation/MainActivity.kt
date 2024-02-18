@@ -1,12 +1,8 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.studying.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +12,10 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModel()
     private val adapter = NotesAdapter {
+        viewModel.favorite(it)
+    }
+
+    private val adapterDelegate = NotesAdapterWithDelegate {
         viewModel.favorite(it)
     }
 
@@ -29,11 +29,14 @@ class MainActivity : AppCompatActivity() {
             binding.input.setText("")
         }
 
-        binding.list.adapter = adapter
+        adapterDelegate.addDelegate(AdapterDelegate.Note())
+        adapterDelegate.addDelegate(AdapterDelegate.Header())
+
+        binding.list.adapter = adapterDelegate
         binding.list.setHasFixedSize(true)
 
         viewModel.uiState.observe(this) {
-            adapter.submitList(it)
+            adapterDelegate.submitList(it)
         }
 
         viewModel.fetchNotes()

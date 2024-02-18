@@ -1,4 +1,7 @@
-package com.example.studying
+package com.example.studying.utils
+
+import com.example.studying.presentation.NoteUi
+import com.example.studying.data.NoteDb
 
 class ToNoteDbMapper : Mapper<NoteUi.Note, NoteDb> {
     override fun map(data: NoteUi.Note): NoteDb =

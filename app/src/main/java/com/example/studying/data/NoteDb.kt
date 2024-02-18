@@ -1,7 +1,8 @@
-package com.example.studying
+package com.example.studying.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.studying.presentation.NoteUi
 
 @Entity(tableName = "notes")
 data class NoteDb(

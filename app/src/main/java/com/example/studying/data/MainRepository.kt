@@ -1,5 +1,7 @@
-package com.example.studying
+package com.example.studying.data
 
+import com.example.studying.utils.Mapper
+import com.example.studying.presentation.NoteUi
 import io.reactivex.Completable
 import io.reactivex.Flowable
 

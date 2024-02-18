@@ -2,6 +2,14 @@ package com.example.studying
 
 import android.app.Application
 import androidx.room.Room
+import com.example.studying.data.MainRepository
+import com.example.studying.data.NoteDb
+import com.example.studying.data.NotesDao
+import com.example.studying.data.NotesDb
+import com.example.studying.presentation.MainViewModel
+import com.example.studying.presentation.NoteUi
+import com.example.studying.utils.Mapper
+import com.example.studying.utils.ToNoteDbMapper
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin

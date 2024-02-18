@@ -1,4 +1,4 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,19 +6,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.studying.R
 import com.example.studying.databinding.HeaderItemBinding
 import com.example.studying.databinding.NoteItemBinding
 
 class NotesAdapter(
     private val favorite: (NoteUi.Note) -> Unit
-) : ListAdapter<NoteUi, NotesAdapter.BaseViewHolder>(Diff()) {
+) : ListAdapter<NoteUi, NotesAdapter.ViewHolder>(Diff()) {
 
-    abstract class BaseViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        open fun bind(item: NoteUi) {}
-        open fun bindFavorite(item: NoteUi) {}
+    abstract class ViewHolder(view: View): RecyclerView.ViewHolder(view)
+
+    abstract class BaseViewHolder<T: NoteUi>(view: View): ViewHolder(view) {
+        open fun bind(item: T) {}
+        open fun bindFavorite(item: T) {}
     }
 
-    inner class NoteViewHolder(private val view: NoteItemBinding): BaseViewHolder(view.root) {
+    inner class NoteViewHolder(private val view: NoteItemBinding): BaseViewHolder<NoteUi.Note>(view.root) {
+
         init {
             view.favorite.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION)
@@ -26,18 +30,18 @@ class NotesAdapter(
             }
         }
 
-        override fun bind(item: NoteUi) {
-            item.showText(view.tvNote)
+        override fun bind(item: NoteUi.Note) {
+            view.tvNote.text = item.text
             bindFavorite(item)
         }
 
-        override fun bindFavorite(item: NoteUi) {
-            item.showIcon(view.favorite)
+        override fun bindFavorite(item: NoteUi.Note) {
+            view.favorite.setImageResource(if (item.isFavorite) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24)
         }
     }
 
-    inner class HeaderViewHolder(private val view: HeaderItemBinding): BaseViewHolder(view.root) {
-        override fun bind(item: NoteUi) {
+    inner class HeaderViewHolder(private val view: HeaderItemBinding): BaseViewHolder<NoteUi.Header>(view.root) {
+        override fun bind(item: NoteUi.Header) {
             item.showText(view.root)
         }
     }
@@ -49,21 +53,27 @@ class NotesAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             VIEW_TYPE_NOTE -> NoteViewHolder(NoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            VIEW_TYPE_HEADER -> HeaderViewHolder(HeaderItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            else -> TODO()
+            else -> HeaderViewHolder(HeaderItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        when (getItemViewType(position)) {
+            VIEW_TYPE_NOTE -> (holder as NoteViewHolder).bind(getItem(position) as NoteUi.Note)
+            VIEW_TYPE_HEADER -> (holder as HeaderViewHolder).bind(getItem(position) as NoteUi.Header)
+        }
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) super.onBindViewHolder(holder, position, payloads)
-        else holder.bindFavorite(getItem(position))
+        else {
+            when (getItemViewType(position)) {
+                VIEW_TYPE_NOTE -> (holder as NoteViewHolder).bindFavorite(getItem(position) as NoteUi.Note)
+            }
+        }
     }
 
     companion object {
