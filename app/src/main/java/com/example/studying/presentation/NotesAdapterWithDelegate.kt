@@ -17,20 +17,27 @@ interface DelegateItem {
 }
 
 interface AdapterDelegate {
-    //fun onCreateViewHolder(parent: ViewGroup): NotesAdapter.ViewHolder
+    fun onCreateViewHolder(parent: ViewGroup, click: OnClickListener): NotesAdapter.ViewHolder
     fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem)
     fun isOfViewType(item: DelegateItem): Boolean
 
     class Note : AdapterDelegate {
-        /*override fun onCreateViewHolder(parent: ViewGroup): NotesAdapter.ViewHolder {
-            return TestAdapter.NoteViewHolder(
-                NoteItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            click: OnClickListener,
+        ): NotesAdapter.ViewHolder {
+            val view = NoteItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
-        }*/
+
+            val holder = MainDelegateAdapter.NoteViewHolder(view)
+            view.favorite.setOnClickListener {
+                click.onClick(holder.adapterPosition)
+            }
+            return holder
+        }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem) {
             (holder as MainDelegateAdapter.NoteViewHolder).bind(item as NoteUi.Note)
@@ -43,15 +50,18 @@ interface AdapterDelegate {
     }
 
     class Header : AdapterDelegate {
-        /*override fun onCreateViewHolder(parent: ViewGroup): NotesAdapter.ViewHolder {
-            return TestAdapter.HeaderViewHolder(
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            click: OnClickListener,
+        ): NotesAdapter.ViewHolder {
+            return MainDelegateAdapter.HeaderViewHolder(
                 HeaderItemBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-        }*/
+        }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem) {
             (holder as MainDelegateAdapter.HeaderViewHolder).bind(item as NoteUi.Header)
@@ -65,30 +75,21 @@ interface AdapterDelegate {
 
 }
 
+interface OnClickListener {
+    fun onClick(position: Int)
+}
+
 abstract class MainDelegateAdapter(
-    private val favorite: (NoteUi.Note) -> Unit
-) : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDelegate()) {
+    private val favorite: (NoteUi.Note) -> Unit,
+) : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDelegate()), OnClickListener {
     private val delegates = mutableListOf<AdapterDelegate>()
 
-    fun addDelegate(delegate: AdapterDelegate) { delegates.add(delegate) }
+    fun addDelegate(delegate: AdapterDelegate) {
+        delegates.add(delegate)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (delegates[viewType]) {
-            is AdapterDelegate.Note -> NoteViewHolder(
-                NoteItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-            else ->  HeaderViewHolder(
-                HeaderItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-        }
+        return delegates[viewType].onCreateViewHolder(parent, this)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -99,14 +100,8 @@ abstract class MainDelegateAdapter(
         return delegates.indexOfFirst { it.isOfViewType(currentList[position]) }
     }
 
-    inner class NoteViewHolder(private val view: NoteItemBinding) : BaseViewHolder<NoteUi.Note>(view.root) {
-
-        init {
-            view.favorite.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION)
-                    favorite(getItem(adapterPosition) as NoteUi.Note)
-            }
-        }
+    class NoteViewHolder(private val view: NoteItemBinding) :
+        BaseViewHolder<NoteUi.Note>(view.root) {
 
         override fun bind(item: NoteUi.Note) {
             view.tvNote.text = item.text
@@ -118,20 +113,26 @@ abstract class MainDelegateAdapter(
         }
     }
 
-    class HeaderViewHolder(private val view: HeaderItemBinding): BaseViewHolder<NoteUi.Header>(view.root) {
+    class HeaderViewHolder(private val view: HeaderItemBinding) :
+        BaseViewHolder<NoteUi.Header>(view.root) {
         override fun bind(item: NoteUi.Header) {
             item.showText(view.root)
         }
     }
 
-    abstract class BaseViewHolder<T: NoteUi>(view: View): NotesAdapter.ViewHolder(view) {
+    abstract class BaseViewHolder<T : NoteUi>(view: View) : NotesAdapter.ViewHolder(view) {
         open fun bind(item: T) {}
         open fun bindFavorite(item: T) {}
+    }
+
+    override fun onClick(position: Int) {
+        if (position != RecyclerView.NO_POSITION)
+            favorite(getItem(position) as NoteUi.Note)
     }
 }
 
 class NotesAdapterWithDelegate(
-    favorite: (NoteUi.Note) -> Unit
+    favorite: (NoteUi.Note) -> Unit,
 ) : MainDelegateAdapter(favorite)
 
 class DiffDelegate : DiffUtil.ItemCallback<DelegateItem>() {
