@@ -1,6 +1,5 @@
 package com.example.studying.presentation
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,77 +9,10 @@ import com.example.studying.R
 import com.example.studying.databinding.HeaderItemBinding
 import com.example.studying.databinding.NoteItemBinding
 
-interface DelegateItem {
-    fun id(item: DelegateItem): Boolean
-    fun compareTo(item: DelegateItem): Boolean
-    fun changePayload(item: DelegateItem): Any
-}
-
-interface AdapterDelegate {
-    fun onCreateViewHolder(parent: ViewGroup, click: OnClickListener): NotesAdapter.ViewHolder
-    fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem)
-    fun isOfViewType(item: DelegateItem): Boolean
-
-    class Note : AdapterDelegate {
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            click: OnClickListener,
-        ): NotesAdapter.ViewHolder {
-            val view = NoteItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-
-            val holder = MainDelegateAdapter.NoteViewHolder(view)
-            view.favorite.setOnClickListener {
-                click.onClick(holder.adapterPosition)
-            }
-            return holder
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem) {
-            (holder as MainDelegateAdapter.NoteViewHolder).bind(item as NoteUi.Note)
-        }
-
-        override fun isOfViewType(item: DelegateItem): Boolean {
-            return item is NoteUi.Note
-        }
-
-    }
-
-    class Header : AdapterDelegate {
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            click: OnClickListener,
-        ): NotesAdapter.ViewHolder {
-            return MainDelegateAdapter.HeaderViewHolder(
-                HeaderItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem) {
-            (holder as MainDelegateAdapter.HeaderViewHolder).bind(item as NoteUi.Header)
-        }
-
-        override fun isOfViewType(item: DelegateItem): Boolean {
-            return item is NoteUi.Header
-        }
-
-    }
-
-}
-
-interface OnClickListener {
-    fun onClick(position: Int)
-}
-
 abstract class MainDelegateAdapter(
     private val favorite: (NoteUi.Note) -> Unit,
+    private val delete: (NoteUi.Note) -> Unit,
+    private val detail: (NoteUi.Note) -> Unit
 ) : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDelegate()), OnClickListener {
     private val delegates = mutableListOf<AdapterDelegate>()
 
@@ -125,15 +57,27 @@ abstract class MainDelegateAdapter(
         open fun bindFavorite(item: T) {}
     }
 
-    override fun onClick(position: Int) {
+    override fun onFavorite(position: Int) {
         if (position != RecyclerView.NO_POSITION)
             favorite(getItem(position) as NoteUi.Note)
+    }
+
+    override fun onDelete(position: Int) {
+        if (position != RecyclerView.NO_POSITION)
+            delete(getItem(position) as NoteUi.Note)
+    }
+
+    override fun onDetail(position: Int) {
+        if (position != RecyclerView.NO_POSITION)
+            detail(getItem(position) as NoteUi.Note)
     }
 }
 
 class NotesAdapterWithDelegate(
     favorite: (NoteUi.Note) -> Unit,
-) : MainDelegateAdapter(favorite)
+    delete: (NoteUi.Note) -> Unit,
+    detail: (NoteUi.Note) -> Unit,
+) : MainDelegateAdapter(favorite, delete, detail)
 
 class DiffDelegate : DiffUtil.ItemCallback<DelegateItem>() {
     override fun areItemsTheSame(oldItem: DelegateItem, newItem: DelegateItem): Boolean =

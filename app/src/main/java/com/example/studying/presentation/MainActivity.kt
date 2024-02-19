@@ -15,10 +15,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.favorite(it)
     }
 
-    private val adapterDelegate = NotesAdapterWithDelegate {
+    private val adapterDelegate = NotesAdapterWithDelegate(favorite = {
         viewModel.favorite(it)
-    }
-
+    }, delete = {
+        viewModel.delete(it)
+    }, detail = {
+        DetailFragment.newInstance(it.text, it.id).show(supportFragmentManager, null)
+    })
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

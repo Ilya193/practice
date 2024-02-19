@@ -54,7 +54,17 @@ class MainViewModel(
     }
 
     fun favorite(item: NoteUi.Note) {
-        addNote(item.copy(isFavorite = !item.isFavorite))
+        repository.update(item.copy(isFavorite = !item.isFavorite))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+    }
+
+    fun delete(item: NoteUi.Note) {
+        repository.delete(item)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
     private fun addNote(note: NoteUi.Note) {

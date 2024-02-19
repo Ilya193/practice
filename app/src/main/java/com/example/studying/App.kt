@@ -6,10 +6,12 @@ import com.example.studying.data.MainRepository
 import com.example.studying.data.NoteDb
 import com.example.studying.data.NotesDao
 import com.example.studying.data.NotesDb
+import com.example.studying.presentation.DetailViewModel
 import com.example.studying.presentation.MainViewModel
 import com.example.studying.presentation.NoteUi
 import com.example.studying.utils.Mapper
 import com.example.studying.utils.ToNoteDbMapper
+import com.example.studying.utils.ToTaskDbMapper
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -26,16 +28,24 @@ class App : Application() {
                     MainViewModel(get())
                 }
 
+                viewModel<DetailViewModel> {
+                    DetailViewModel(get())
+                }
+
                 factory<MainRepository> {
-                    MainRepository.Base(get(), get())
+                    MainRepository.Base(get(), get(), get())
                 }
 
                 single<NotesDao> {
                     Room.databaseBuilder(get(), NotesDb::class.java, "notes_db").build().notesDao()
                 }
 
-                factory<Mapper<NoteUi.Note, NoteDb>> {
+                factory<ToNoteDbMapper> {
                     ToNoteDbMapper()
+                }
+
+                factory<ToTaskDbMapper> {
+                    ToTaskDbMapper()
                 }
             })
         }
