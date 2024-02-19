@@ -1,8 +1,5 @@
 package com.example.studying.data
 
-import android.database.sqlite.SQLiteConstraintException
-import android.util.Log
-import com.example.studying.utils.Mapper
 import com.example.studying.presentation.NoteUi
 import com.example.studying.presentation.TaskUi
 import com.example.studying.utils.ToNoteDbMapper
@@ -14,9 +11,11 @@ interface MainRepository {
     fun getAllNotes(): Flowable<List<NoteDb>>
     fun addNote(note: NoteUi.Note): Completable
     fun update(note: NoteUi.Note): Completable
-    fun delete(note: NoteUi.Note): Completable
+    fun deleteNote(note: NoteUi.Note): Completable
     fun fetchTasks(id: Int): Flowable<List<TaskDb>>
     fun addTask(task: TaskUi.Task): Completable
+    fun deleteTask(note: TaskUi.Task): Completable
+
 
     class Base(
         private val dao: NotesDao,
@@ -26,8 +25,9 @@ interface MainRepository {
         override fun getAllNotes(): Flowable<List<NoteDb>> = dao.getAllNotes()
         override fun addNote(note: NoteUi.Note): Completable = dao.addNote(noteMapper.map(note))
         override fun update(note: NoteUi.Note): Completable = dao.update(noteMapper.map(note))
-        override fun delete(note: NoteUi.Note): Completable = dao.delete(noteMapper.map(note))
+        override fun deleteNote(note: NoteUi.Note): Completable = dao.deleteNote(noteMapper.map(note))
         override fun fetchTasks(id: Int): Flowable<List<TaskDb>> = dao.fetchTasks(id)
         override fun addTask(task: TaskUi.Task): Completable = dao.addTask(taskMapper.map(task))
+        override fun deleteTask(note: TaskUi.Task): Completable = dao.deleteTask(taskMapper.map(note))
     }
 }

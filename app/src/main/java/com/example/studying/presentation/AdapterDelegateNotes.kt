@@ -5,17 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.studying.databinding.HeaderItemBinding
 import com.example.studying.databinding.NoteItemBinding
-import com.example.studying.databinding.TaskItemBinding
 
-interface AdapterDelegate {
-    fun onCreateViewHolder(parent: ViewGroup, clickListener: OnClickListener): RecyclerView.ViewHolder
+interface AdapterDelegateNotes {
+    fun onCreateViewHolder(
+        parent: ViewGroup,
+        clickListener: OnClickListenerNotes
+    ): RecyclerView.ViewHolder
+
     fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem)
     fun isOfViewType(item: DelegateItem): Boolean
 
-    class Note : AdapterDelegate {
+    class Note : AdapterDelegateNotes {
         override fun onCreateViewHolder(
             parent: ViewGroup,
-            clickListener: OnClickListener,
+            clickListener: OnClickListenerNotes,
         ): RecyclerView.ViewHolder {
             val view = NoteItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -47,10 +50,10 @@ interface AdapterDelegate {
 
     }
 
-    class Header : AdapterDelegate {
+    class Header : AdapterDelegateNotes {
         override fun onCreateViewHolder(
             parent: ViewGroup,
-            clickListener: OnClickListener,
+            clickListener: OnClickListenerNotes,
         ): NotesAdapter.ViewHolder {
             return MainDelegateAdapter.HeaderViewHolder(
                 HeaderItemBinding.inflate(
@@ -67,30 +70,6 @@ interface AdapterDelegate {
 
         override fun isOfViewType(item: DelegateItem): Boolean {
             return item is NoteUi.Header
-        }
-
-    }
-
-    class Task : AdapterDelegate {
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            clickListener: OnClickListener,
-        ): RecyclerView.ViewHolder {
-            return TasksAdapter.TaskViewHolder(
-                TaskItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem) {
-            (holder as TasksAdapter.TaskViewHolder).bind(item as TaskUi.Task)
-        }
-
-        override fun isOfViewType(item: DelegateItem): Boolean {
-            return item is TaskUi.Task
         }
 
     }

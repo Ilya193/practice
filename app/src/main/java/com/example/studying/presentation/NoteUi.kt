@@ -62,3 +62,8 @@ sealed class NoteUi: DelegateItem {
         }
     }
 }
+
+sealed interface NoteUiState {
+    data class Success(val data: List<NoteUi>) : NoteUiState
+    data object Empty : NoteUiState
+}

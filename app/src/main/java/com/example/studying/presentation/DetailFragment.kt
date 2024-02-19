@@ -1,13 +1,10 @@
 package com.example.studying.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.os.bundleOf
-import com.example.studying.R
 import com.example.studying.databinding.FragmentDetailBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,7 +18,9 @@ class DetailFragment : BottomSheetDialogFragment() {
 
     private val viewModel: DetailViewModel by viewModel()
 
-    private val adapter = TasksAdapter()
+    private val adapter = TasksAdapter {
+        viewModel.delete(it)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +37,7 @@ class DetailFragment : BottomSheetDialogFragment() {
 
         binding.noteTitle.text = title
 
-        adapter.addDelegate(AdapterDelegate.Task())
+        adapter.addDelegate(AdapterDelegateTasks.Task())
         binding.tasks.adapter = adapter
 
         viewModel.fetchTasks(id)
@@ -50,7 +49,9 @@ class DetailFragment : BottomSheetDialogFragment() {
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            binding.tvEmpty.visibility = if (it is TaskUiState.Empty) View.VISIBLE else View.GONE
+            binding.tasks.visibility = if (it is TaskUiState.Success) View.VISIBLE else View.GONE
+            if (it is TaskUiState.Success) adapter.submitList(it.data)
         }
     }
 

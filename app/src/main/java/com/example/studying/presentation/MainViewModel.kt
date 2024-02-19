@@ -13,8 +13,8 @@ class MainViewModel(
     private val repository: MainRepository
 ): ViewModel() {
 
-    private val _uiState = MutableLiveData<List<NoteUi>>()
-    val uiState: LiveData<List<NoteUi>> get() = _uiState
+    private val _uiState = MutableLiveData<NoteUiState>()
+    val uiState: LiveData<NoteUiState> get() = _uiState
 
     private var disposable: Disposable? = null
 
@@ -45,7 +45,8 @@ class MainViewModel(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { notes ->
-                _uiState.value = notes
+                if (notes.isEmpty()) _uiState.value = NoteUiState.Empty
+                else _uiState.value = NoteUiState.Success(notes)
             }
     }
 
@@ -61,7 +62,7 @@ class MainViewModel(
     }
 
     fun delete(item: NoteUi.Note) {
-        repository.delete(item)
+        repository.deleteNote(item)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()

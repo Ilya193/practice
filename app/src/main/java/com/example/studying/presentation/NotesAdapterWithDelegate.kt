@@ -13,10 +13,10 @@ abstract class MainDelegateAdapter(
     private val favorite: (NoteUi.Note) -> Unit,
     private val delete: (NoteUi.Note) -> Unit,
     private val detail: (NoteUi.Note) -> Unit
-) : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDelegate()), OnClickListener {
-    private val delegates = mutableListOf<AdapterDelegate>()
+) : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDelegate()), OnClickListenerNotes {
+    private val delegates = mutableListOf<AdapterDelegateNotes>()
 
-    fun addDelegate(delegate: AdapterDelegate) {
+    fun addDelegate(delegate: AdapterDelegateNotes) {
         delegates.add(delegate)
     }
 

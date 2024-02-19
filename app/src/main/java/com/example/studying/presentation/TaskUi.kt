@@ -19,3 +19,8 @@ sealed class TaskUi : DelegateItem {
 
     }
 }
+
+sealed interface TaskUiState {
+    data class Success(val data: List<TaskUi>): TaskUiState
+    data object Empty : TaskUiState
+}

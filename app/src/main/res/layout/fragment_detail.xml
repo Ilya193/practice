@@ -8,6 +8,18 @@
     tools:context=".presentation.DetailFragment">
 
     <TextView
+        android:id="@+id/tvEmpty"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_subtask"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/noteTitle"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.example.studying.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,14 +33,16 @@ class MainActivity : AppCompatActivity() {
             binding.input.setText("")
         }
 
-        adapterDelegate.addDelegate(AdapterDelegate.Note())
-        adapterDelegate.addDelegate(AdapterDelegate.Header())
+        adapterDelegate.addDelegate(AdapterDelegateNotes.Note())
+        adapterDelegate.addDelegate(AdapterDelegateNotes.Header())
 
         binding.list.adapter = adapterDelegate
         binding.list.setHasFixedSize(true)
 
         viewModel.uiState.observe(this) {
-            adapterDelegate.submitList(it)
+            binding.tvEmpty.visibility = if (it is NoteUiState.Empty) View.VISIBLE else View.GONE
+            binding.list.visibility = if (it is NoteUiState.Success) View.VISIBLE else View.GONE
+            if (it is NoteUiState.Success) adapterDelegate.submitList(it.data)
         }
 
         viewModel.fetchNotes()

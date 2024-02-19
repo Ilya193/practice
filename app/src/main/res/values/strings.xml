@@ -4,4 +4,6 @@
     <string name="ordinary">Обычные</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notes_not_found">Заметки не найдены</string>
+    <string name="add_subtask">Здесь можно добавить подзадачи</string>
 </resources>

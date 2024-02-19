@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.studying.databinding.TaskItemBinding
 
-class TasksAdapter : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDelegate()), OnClickListener {
+class TasksAdapter(
+    private val delete: (TaskUi.Task) -> Unit
+) : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDelegate()), OnClickListenerTasks {
 
-    private val delegates = mutableListOf<AdapterDelegate>()
+    private val delegates = mutableListOf<AdapterDelegateTasks>()
 
-    fun addDelegate(delegate: AdapterDelegate) {
+    fun addDelegate(delegate: AdapterDelegateTasks) {
         delegates.add(delegate)
     }
 
@@ -37,15 +39,7 @@ class TasksAdapter : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffDele
         }
     }
 
-    override fun onFavorite(position: Int) {
-
-    }
-
     override fun onDelete(position: Int) {
-
-    }
-
-    override fun onDetail(position: Int) {
-
+        delete(getItem(position) as TaskUi.Task)
     }
 }

@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import androidx.room.Update
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -22,11 +21,14 @@ interface NotesDao {
     fun update(note: NoteDb): Completable
 
     @Delete
-    fun delete(note: NoteDb): Completable
+    fun deleteNote(note: NoteDb): Completable
 
     @Query("SELECT * FROM tasks where noteId = :id")
     fun fetchTasks(id: Int): Flowable<List<TaskDb>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addTask(task: TaskDb): Completable
+
+    @Delete
+    fun deleteTask(note: TaskDb): Completable
 }
