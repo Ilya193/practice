@@ -1,7 +1,6 @@
 package com.example.studying.presentation
 
-interface OnClickListenerNotes {
+interface OnClickListenerNotes : OnClickListener {
     fun onFavorite(position: Int)
-    fun onDelete(position: Int)
     fun onDetail(position: Int)
 }

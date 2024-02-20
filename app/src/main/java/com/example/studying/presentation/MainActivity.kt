@@ -1,8 +1,8 @@
 package com.example.studying.presentation
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,16 +33,25 @@ class MainActivity : AppCompatActivity() {
             binding.input.setText("")
         }
 
-        adapterDelegate.addDelegate(AdapterDelegateNotes.Note())
-        adapterDelegate.addDelegate(AdapterDelegateNotes.Header())
-
-        binding.list.adapter = adapterDelegate
-        binding.list.setHasFixedSize(true)
+        initRecyclerView()
 
         viewModel.uiState.observe(this) {
             adapterDelegate.submitList(it)
         }
 
         viewModel.fetchNotes()
+    }
+
+    private fun initRecyclerView() {
+        val itemTouchHelperCallback = CustomItemTouchHelper {
+            adapterDelegate.onDelete(it)
+        }
+
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.list)
+
+        binding.list.adapter = adapterDelegate
+        binding.list.setHasFixedSize(true)
+        adapterDelegate.addDelegate(AdapterDelegateNotes.Note())
+        adapterDelegate.addDelegate(AdapterDelegateNotes.Header())
     }
 }
