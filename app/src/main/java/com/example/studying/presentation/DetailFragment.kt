@@ -49,9 +49,10 @@ class DetailFragment : BottomSheetDialogFragment() {
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.tvEmpty.visibility = if (it is TaskUiState.Empty) View.VISIBLE else View.GONE
-            binding.tasks.visibility = if (it is TaskUiState.Success) View.VISIBLE else View.GONE
+            binding.tasks.visibility = if (it is TaskUiState.Success) View.VISIBLE else View.INVISIBLE
+            binding.tvEmpty.visibility = if (it is TaskUiState.Empty) View.VISIBLE else View.INVISIBLE
             if (it is TaskUiState.Success) adapter.submitList(it.data)
+            else adapter.submitList(emptyList())
         }
     }
 

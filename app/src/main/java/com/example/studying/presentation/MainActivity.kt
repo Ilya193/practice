@@ -40,9 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.list.setHasFixedSize(true)
 
         viewModel.uiState.observe(this) {
-            binding.tvEmpty.visibility = if (it is NoteUiState.Empty) View.VISIBLE else View.GONE
-            binding.list.visibility = if (it is NoteUiState.Success) View.VISIBLE else View.GONE
-            if (it is NoteUiState.Success) adapterDelegate.submitList(it.data)
+            adapterDelegate.submitList(it)
         }
 
         viewModel.fetchNotes()
