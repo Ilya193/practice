@@ -6,9 +6,11 @@ import com.example.studying.data.MainRepository
 import com.example.studying.data.NoteDb
 import com.example.studying.data.NotesDao
 import com.example.studying.data.NotesDb
+import com.example.studying.data.TaskDb
 import com.example.studying.presentation.DetailViewModel
 import com.example.studying.presentation.MainViewModel
 import com.example.studying.presentation.NoteUi
+import com.example.studying.presentation.TaskUi
 import com.example.studying.utils.Mapper
 import com.example.studying.utils.ToNoteDbMapper
 import com.example.studying.utils.ToTaskDbMapper
@@ -40,11 +42,11 @@ class App : Application() {
                     Room.databaseBuilder(get(), NotesDb::class.java, "notes_db").build().notesDao()
                 }
 
-                factory<ToNoteDbMapper> {
+                factory<Mapper<NoteUi.Note, NoteDb>> {
                     ToNoteDbMapper()
                 }
 
-                factory<ToTaskDbMapper> {
+                factory<Mapper<TaskUi.Task, TaskDb>> {
                     ToTaskDbMapper()
                 }
             })

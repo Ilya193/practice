@@ -2,6 +2,7 @@ package com.example.studying.data
 
 import com.example.studying.presentation.NoteUi
 import com.example.studying.presentation.TaskUi
+import com.example.studying.utils.Mapper
 import com.example.studying.utils.ToNoteDbMapper
 import com.example.studying.utils.ToTaskDbMapper
 import io.reactivex.Completable
@@ -19,8 +20,8 @@ interface MainRepository {
 
     class Base(
         private val dao: NotesDao,
-        private val noteMapper: ToNoteDbMapper,
-        private val taskMapper: ToTaskDbMapper
+        private val noteMapper: Mapper<NoteUi.Note, NoteDb>,
+        private val taskMapper: Mapper<TaskUi.Task, TaskDb>
     ) : MainRepository {
         override fun getAllNotes(): Flowable<List<NoteDb>> = dao.getAllNotes()
         override fun addNote(note: NoteUi.Note): Completable = dao.addNote(noteMapper.map(note))
