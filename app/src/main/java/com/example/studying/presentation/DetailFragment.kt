@@ -1,14 +1,11 @@
 package com.example.studying.presentation
 
-import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.example.studying.R
 import com.example.studying.databinding.FragmentDetailBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -68,25 +65,25 @@ class DetailFragment : BottomSheetDialogFragment() {
         }
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.tasks)
+        binding.tasks.addItemDecoration(CustomItemDecoration(resources.getDimensionPixelOffset(R.dimen.item_offset)))
         adapter.addDelegate(AdapterDelegateTasks.Task())
         binding.tasks.adapter = adapter
-
     }
 
-override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-}
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-companion object {
-    private const val TITLE_KEY = "TITLE_KEY"
-    private const val ID_KEY = "ID_KEY"
-    fun newInstance(title: String, id: Int) =
-        DetailFragment().apply {
-            arguments = bundleOf().apply {
-                putString(TITLE_KEY, title)
-                putInt(ID_KEY, id)
+    companion object {
+        private const val TITLE_KEY = "TITLE_KEY"
+        private const val ID_KEY = "ID_KEY"
+        fun newInstance(title: String, id: Int) =
+            DetailFragment().apply {
+                arguments = bundleOf().apply {
+                    putString(TITLE_KEY, title)
+                    putInt(ID_KEY, id)
+                }
             }
-        }
-}
+    }
 }

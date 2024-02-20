@@ -3,6 +3,7 @@ package com.example.studying.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.studying.R
 import com.example.studying.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.list)
+        binding.list.addItemDecoration(CustomItemDecoration(resources.getDimensionPixelOffset(R.dimen.item_offset)))
 
         binding.list.adapter = adapterDelegate
         binding.list.setHasFixedSize(true)
