@@ -10,8 +10,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(
-    private val repository: MainRepository
-): ViewModel() {
+    private val repository: MainRepository,
+) : ViewModel() {
 
     private val _uiState = MutableLiveData<List<NoteUi>>()
     val uiState: LiveData<List<NoteUi>> get() = _uiState
@@ -33,12 +33,10 @@ class MainViewModel(
                         if (item.isFavorite && firstFavorite) {
                             firstFavorite = false
                             Flowable.just(NoteUi.Header.Favorite, item)
-                        }
-                        else if (!item.isFavorite && firstOrdinary) {
+                        } else if (!item.isFavorite && firstOrdinary) {
                             firstOrdinary = false
                             Flowable.just(NoteUi.Header.Ordinary, item)
-                        }
-                        else Flowable.just(item)
+                        } else Flowable.just(item)
                     }
                     .toList()
                     .toFlowable()

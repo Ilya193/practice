@@ -42,11 +42,11 @@ class App : Application() {
                     Room.databaseBuilder(get(), NotesDb::class.java, "notes_db").build().notesDao()
                 }
 
-                factory<Mapper<NoteUi.Note, NoteDb>> {
+                factory<ToNoteDbMapper> {
                     ToNoteDbMapper()
                 }
 
-                factory<Mapper<TaskUi.Task, TaskDb>> {
+                factory<ToTaskDbMapper> {
                     ToTaskDbMapper()
                 }
             })
