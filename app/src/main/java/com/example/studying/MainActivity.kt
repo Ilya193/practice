@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.example.studying.databinding.ActivityMainBinding
 
 
+
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -22,8 +23,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.root.setOnClickListener {
             val animatorSet = AnimatorSet()
-            val scaleDownX = ObjectAnimator.ofFloat(binding.img, "scaleX", 0.8f)
-            val scaleDownY = ObjectAnimator.ofFloat(binding.img, "scaleY", 0.8f)
+            val scaleDownX = ObjectAnimator.ofFloat(binding.img, "scaleX", 0.4f)
+            val scaleDownY = ObjectAnimator.ofFloat(binding.img, "scaleY", 0.4f)
             scaleDownX.duration = 50
             scaleDownY.duration = 50
 
@@ -39,9 +40,9 @@ class MainActivity : AppCompatActivity() {
             scaleUp.play(scaleUpX).with(scaleUpY)
 
             val colorFrom =
-                ContextCompat.getColor(this, if (state == 0) R.color.red else R.color.grey)
+                ContextCompat.getColor(this, if (state == 0) R.color.red else R.color.black)
             val colorTo =
-                ContextCompat.getColor(this, if (state == 1) R.color.grey else R.color.red)
+                ContextCompat.getColor(this, if (state == 1) R.color.black else R.color.red)
             val colorAnimation = ValueAnimator.ofArgb(colorFrom, colorTo)
             colorAnimation.duration = 50
             colorAnimation.addUpdateListener { animator ->
