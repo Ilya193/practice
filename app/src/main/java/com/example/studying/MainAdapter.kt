@@ -9,8 +9,22 @@ import com.example.studying.databinding.ItemLayoutBinding
 
 class MainAdapter: ListAdapter<ItemUi, MainAdapter.ViewHolder>(Diff()) {
     class ViewHolder(private val view: ItemLayoutBinding) : RecyclerView.ViewHolder(view.root) {
+
+        init {
+            view.root.setOnClickListener {
+                view.data.animate().scaleY(1.2f).scaleX(1.2f)
+                    .rotation(1f).withEndAction {
+                        view.data.animate().scaleY(1.2f).scaleX(1.2f).rotation(-1f)
+                            .setDuration(50).withEndAction {
+                                view.data.animate().scaleY(1f).scaleX(1f).rotation(0f)
+                                    .setDuration(50).start()
+                            }.start()
+                    }.setDuration(50).start()
+            }
+        }
+
         fun bind(item: ItemUi) {
-            view.root.text = item.num.toString()
+            view.data.text = item.num.toString()
         }
     }
 
