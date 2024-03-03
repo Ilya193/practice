@@ -31,13 +31,16 @@ class MainAdapter(
 
         fun previous(item: String) {
             view.textView.text = item
-            view.root.translationY = pxPrev
-            view.root.animate().translationY(0f).setDuration(250).start()
+            bind(pxPrev)
         }
 
         fun next(item: String) {
             view.textView.text = item
-            view.root.translationY = pxNext
+            bind(pxNext)
+        }
+
+        private fun bind(px: Float) {
+            view.root.translationY = px
             view.root.animate().translationY(0f).setDuration(250).start()
         }
     }
