@@ -69,10 +69,6 @@ class MusicService : Service() {
 
         setPlaybackState(PlaybackStateCompat.STATE_PLAYING, 0)
 
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent =
-            PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
-
         val playButtonIntent = Intent(this, MusicService::class.java)
         playButtonIntent.action = "ACTION_PLAY"
         val playButtonPendingIntent =
@@ -112,7 +108,6 @@ class MusicService : Service() {
                 mediaPlayer.start()
                 setPlaybackState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.currentPosition)
                 val notification = buildNotification()
-                    .setContentIntent(pendingIntent)
                     .addAction(R.drawable.skip_previous, "Previous", previousButtonPendingIntent)
                     .addAction(R.drawable.pause, "Pause", pauseButtonPendingIntent)
                     .addAction(R.drawable.skip_next, "Next", nextButtonPendingIntent)
@@ -125,7 +120,6 @@ class MusicService : Service() {
                 mediaPlayer.pause()
                 setPlaybackState(PlaybackStateCompat.STATE_PAUSED, mediaPlayer.currentPosition)
                 val notification = buildNotification()
-                    .setContentIntent(pendingIntent)
                     .addAction(R.drawable.skip_previous, "Previous", previousButtonPendingIntent)
                     .addAction(R.drawable.play_arrow, "Play", playButtonPendingIntent)
                     .addAction(R.drawable.skip_next, "Next", nextButtonPendingIntent)
@@ -137,12 +131,26 @@ class MusicService : Service() {
             override fun onSkipToNext() {
                 if (currentMusic == musics.size - 1) currentMusic = 0
                 else currentMusic++
+                val notification = buildNotification()
+                    .addAction(R.drawable.skip_previous, "Previous", previousButtonPendingIntent)
+                    .addAction(R.drawable.pause, "Pause", pauseButtonPendingIntent)
+                    .addAction(R.drawable.skip_next, "Next", nextButtonPendingIntent)
+                    .addAction(R.drawable.ic_close, "Close", closeButtonPendingIntent)
+                    .build()
+                notificationManager.notify(1, notification)
                 onSkip()
             }
 
             override fun onSkipToPrevious() {
                 if (currentMusic == 0) currentMusic = musics.size - 1
                 else currentMusic--
+                val notification = buildNotification()
+                    .addAction(R.drawable.skip_previous, "Previous", previousButtonPendingIntent)
+                    .addAction(R.drawable.pause, "Pause", pauseButtonPendingIntent)
+                    .addAction(R.drawable.skip_next, "Next", nextButtonPendingIntent)
+                    .addAction(R.drawable.ic_close, "Close", closeButtonPendingIntent)
+                    .build()
+                notificationManager.notify(1, notification)
                 onSkip()
             }
 
@@ -161,7 +169,6 @@ class MusicService : Service() {
         })
 
         val notification = buildNotification()
-            .setContentIntent(pendingIntent)
             .addAction(R.drawable.skip_previous, "Previous", previousButtonPendingIntent)
             .addAction(R.drawable.pause, "Pause", pauseButtonPendingIntent)
             .addAction(R.drawable.skip_next, "Next", nextButtonPendingIntent)
@@ -217,15 +224,21 @@ class MusicService : Service() {
         )
     }
 
-    private fun buildNotification(): NotificationCompat.Builder =
-        NotificationCompat.Builder(this, CHANNEL_ID)
+    private fun buildNotification(): NotificationCompat.Builder {
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Music Player")
             .setContentText("Music")
+            .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1, 2)
                     .setMediaSession(mediaSession.sessionToken)
             )
+    }
 
     companion object {
         private const val CHANNEL_ID = "CHANNEL_ID"
