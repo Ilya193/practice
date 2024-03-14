@@ -45,10 +45,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation("io.ktor:ktor-client-android:2.3.6")
-    implementation("io.ktor:ktor-client-serialization:2.3.6")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
+    implementation(Libs.ktorClientAndroid)
+    implementation(Libs.ktorClientSerialization)
+    implementation(Libs.ktorClientContentNegotiation)
+    implementation(Libs.ktorSerializationKotlinxJson)
 
-    implementation("io.insert-koin:koin-android:3.3.2")
+    implementation(Libs.koin)
 }
